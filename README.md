@@ -30,16 +30,13 @@ pnpm add @kmd/logo
 
 ```jsx
 import React from 'react';
-import { Logo } from '@kmd/logo';
+import { KMDLogo, KMDExitLogo } from '@kmd/logo';
 
 function App() {
   return (
     <div>
-      <Logo 
-        width={400} 
-        text="KUNSTMUSIKKDESIGN" 
-        mode={[{ start: 0, length: 5 }]} 
-      />
+      <KMDLogo width={400} mode="KUNST" />
+      <KMDExitLogo width={400} mode="EXIT" />
     </div>
   );
 }
@@ -51,17 +48,16 @@ export default App;
 
 ```tsx
 import React from 'react';
-import { Logo } from '@kmd/logo';
+import { KMDLogo, KMDExitLogo } from '@kmd/logo';
 
 interface AppProps {}
 
 const App: React.FC<AppProps> = () => {
   return (
     <div>
-      <Logo 
+      <KMDLogo 
         width={400}
-        text="KMDEXIT▝"
-        mode={[{ start: 3, length: 4 }]}
+        mode="DESIGN"
         constants={{
           k: 234,
           b: 18,
@@ -70,6 +66,7 @@ const App: React.FC<AppProps> = () => {
           fcap: 15036
         }}
       />
+      <KMDExitLogo width={400} mode="EXIT" />
     </div>
   );
 };
@@ -83,17 +80,13 @@ export default App;
 
 ```tsx
 // app/page.tsx
-import { Logo } from '@kmd/logo';
+import { KMDLogo } from '@kmd/logo';
 
 export default function Home() {
   return (
     <main>
       <h1>My App</h1>
-      <Logo 
-        width={600} 
-        text="KUNSTMUSIKKDESIGN" 
-        mode={[{ start: 11, length: 6 }]} 
-      />
+      <KMDLogo width={600} mode="DESIGN" />
     </main>
   );
 }
@@ -103,18 +96,14 @@ export default function Home() {
 
 ```tsx
 // pages/index.tsx
-import { Logo } from '@kmd/logo';
+import { KMDLogo } from '@kmd/logo';
 import type { NextPage } from 'next';
 
 const Home: NextPage = () => {
   return (
     <div>
       <h1>My App</h1>
-      <Logo 
-        width={600} 
-        text="KUNSTMUSIKKDESIGN" 
-        mode={[{ start: 11, length: 6 }]} 
-      />
+      <KMDLogo width={600} mode="DESIGN" />
     </div>
   );
 };
@@ -127,42 +116,33 @@ export default Home;
 ```tsx
 // src/App.tsx
 import { useState } from 'react';
-import { Logo } from '@kmd/logo';
+import { KMDLogo, KMDExitLogo } from '@kmd/logo';
 
 function App() {
-  const [text, setText] = useState('KUNSTMUSIKKDESIGN');
-  const [mode, setEmphasis] = useState([{ start: 0, length: 5 }]);
+  const [logoType, setLogoType] = useState<'KMD' | 'EXIT'>('KMD');
+  const [mode, setMode] = useState('DEFAULT');
   
-  const presets = [
-    { text: 'KUNSTMUSIKKDESIGN', mode: [{ start: 0, length: 5 }], label: 'KUNST' },
-    { text: 'KUNSTMUSIKKDESIGN', mode: [{ start: 5, length: 6 }], label: 'MUSIKK' },
-    { text: 'KUNSTMUSIKKDESIGN', mode: [{ start: 11, length: 6 }], label: 'DESIGN' },
-    { text: 'KMDEXIT▝', mode: [{ start: 0, length: 3 }], label: 'KMD' },
-    { text: 'KMDEXIT▝', mode: [{ start: 3, length: 4 }], label: 'EXIT' }
-  ];
+  const kmdModes = ['KUNST', 'MUSIKK', 'DESIGN', 'DEFAULT'];
+  const exitModes = ['K', 'M', 'D', 'EXIT', 'DEFAULT'];
   
   return (
     <div className="App">
-      <select 
-        value={`${text}-${JSON.stringify(mode)}`} 
-        onChange={(e) => {
-          const preset = presets.find(p => 
-            `${p.text}-${JSON.stringify(p.mode)}` === e.target.value
-          );
-          if (preset) {
-            setText(preset.text);
-            setEmphasis(preset.mode);
-          }
-        }}
-      >
-        {presets.map(preset => (
-          <option key={preset.label} value={`${preset.text}-${JSON.stringify(preset.mode)}`}>
-            {preset.label}
-          </option>
+      <div>
+        <button onClick={() => setLogoType('KMD')}>KMD Logo</button>
+        <button onClick={() => setLogoType('EXIT')}>Exit Logo</button>
+      </div>
+      
+      <select value={mode} onChange={(e) => setMode(e.target.value)}>
+        {(logoType === 'KMD' ? kmdModes : exitModes).map(m => (
+          <option key={m} value={m}>{m}</option>
         ))}
       </select>
       
-      <Logo width={500} text={text} mode={mode} />
+      {logoType === 'KMD' ? (
+        <KMDLogo width={500} mode={mode} />
+      ) : (
+        <KMDExitLogo width={500} mode={mode} />
+      )}
     </div>
   );
 }
@@ -170,14 +150,28 @@ function App() {
 export default App;
 ```
 
-## Props
+## Components
+
+### KMDLogo
+
+Displays "KUNSTMUSIKKDESIGN" with physics-based letter animation.
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `width` | `number` | `400` | Width of the logo in pixels |
-| `text` | `string` | `'KUNSTMUSIKKDESIGN'` | Text to display (supported letters: K,U,N,S,T,M,I,D,E,G,X,▝) |
-| `mode` | `Array<{start: number, length: number}>` | `[]` | Array of letter ranges to emphasize (visual opacity) |
-| `mode` | `Array<{start: number, length: number}>` | `[]` | Array of letter ranges with stronger physics anchoring |
+| `width` | `number` | `420` | Width of the logo in pixels |
+| `mode` | `'KUNST' \| 'MUSIKK' \| 'DESIGN' \| 'DEFAULT'` | `'DEFAULT'` | Emphasis mode for letter positioning |
+| `constants` | `PhysicsConstants` | See below | Physics simulation parameters |
+| `style` | `React.CSSProperties` | `{}` | Additional CSS styles |
+| `mainPage` | `string` | `undefined` | URL for the logo link |
+
+### KMDExitLogo
+
+Displays "KMDEXIT▝" with physics-based letter animation.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `width` | `number` | `420` | Width of the logo in pixels |
+| `mode` | `'K' \| 'M' \| 'D' \| 'EXIT' \| 'DEFAULT'` | `'DEFAULT'` | Emphasis mode for letter positioning |
 | `constants` | `PhysicsConstants` | See below | Physics simulation parameters |
 | `style` | `React.CSSProperties` | `{}` | Additional CSS styles |
 | `mainPage` | `string` | `undefined` | URL for the logo link |
@@ -211,7 +205,7 @@ interface PhysicsConstants {
 ### Custom Physics Parameters
 
 ```tsx
-import { Logo } from '@kmd/logo';
+import { KMDLogo } from '@kmd/logo';
 
 function CustomPhysicsLogo() {
   const customConstants = {
@@ -223,11 +217,9 @@ function CustomPhysicsLogo() {
   };
   
   return (
-    <Logo
+    <KMDLogo
       width={400}
-      text="KUNSTMUSIKKDESIGN"
-      mode={[{ start: 5, length: 6 }]} // Emphasize MUSIKK visually
-      mode={[{ start: 5, length: 6 }]}  // Make MUSIKK a physics anchor
+      mode="MUSIKK"
       constants={customConstants}
       style={{ border: '1px solid #ccc', padding: '20px' }}
     />
@@ -235,29 +227,22 @@ function CustomPhysicsLogo() {
 }
 ```
 
-### Text Variants with Anchoring
+### Multiple Logo Components
 
 ```tsx
-import { Logo } from '@kmd/logo';
+import { KMDLogo, KMDExitLogo } from '@kmd/logo';
 
-function TextVariants() {
+function MultipleLogos() {
   return (
     <div>
-      {/* KMD variant with KMD as anchor */}
-      <Logo
-        width={300}
-        text="KMDEXIT▝"
-        mode={[{ start: 0, length: 3 }]}
-        mode={[{ start: 0, length: 3 }]}
-      />
+      {/* Main KMD logo with KUNST emphasis */}
+      <KMDLogo width={400} mode="KUNST" />
       
-      {/* EXIT variant with EXIT as anchor */}
-      <Logo
-        width={300}
-        text="KMDEXIT▝"
-        mode={[{ start: 3, length: 4 }]}
-        mode={[{ start: 3, length: 4 }]}
-      />
+      {/* Exit logo with EXIT emphasis */}
+      <KMDExitLogo width={300} mode="EXIT" />
+      
+      {/* Design emphasis */}
+      <KMDLogo width={500} mode="DESIGN" />
     </div>
   );
 }
@@ -266,14 +251,13 @@ function TextVariants() {
 ### As a Link
 
 ```tsx
-import { Logo } from '@kmd/logo';
+import { KMDLogo } from '@kmd/logo';
 
 function LinkedLogo() {
   return (
-    <Logo
+    <KMDLogo
       width={350}
-      text="KUNSTMUSIKKDESIGN"
-      mode={[{ start: 0, length: 5 }]} // Emphasize KUNST
+      mode="KUNST"
       mainPage="https://kmd.ac"
       style={{ cursor: 'pointer' }}
     />
@@ -285,7 +269,7 @@ function LinkedLogo() {
 
 ```tsx
 import { useState, useEffect } from 'react';
-import { Logo } from '@kmd/logo';
+import { KMDLogo } from '@kmd/logo';
 
 function ResponsiveLogo() {
   const [width, setWidth] = useState(400);
@@ -301,11 +285,7 @@ function ResponsiveLogo() {
   }, []);
   
   return (
-    <Logo 
-      width={width} 
-      text="KUNSTMUSIKKDESIGN" 
-      mode={[{ start: 11, length: 6 }]} // Emphasize DESIGN
-    />
+    <KMDLogo width={width} mode="DESIGN" />
   );
 }
 ```
@@ -349,10 +329,9 @@ The logo inherits styles and can be customized:
 ```
 
 ```tsx
-<Logo 
+<KMDLogo 
   width={400}
-  text="KUNSTMUSIKKDESIGN"
-  mode={[]}
+  mode="DEFAULT"
   style={{ className: 'my-logo' }}
 />
 ```
