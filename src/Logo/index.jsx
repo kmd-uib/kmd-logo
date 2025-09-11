@@ -34,10 +34,10 @@ const anchors = {
 
 // For KMDEXIT▝ text variants
 const kmdexitAnchors = {
-    K: [0, 0, 0, 0, 0, 0, 0, 0],
-    M: [0, 0.125, 0, 0, 0, 0, 0, 0],
-    D: [0, 0.125, 0.25, 0, 0, 0, 0, 0],
-    EXIT: [0, 0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875]
+    K: [0, 0.19, 0.3227, 0.4783, 0.6160, 0.7619, 0.8221, 0.9176, 1.0000],
+    M: [0, 0.20, 0.43, 0.4783, 0.6160, 0.7619, 0.8221, 0.9176, 1.0000],
+    D: [0, 0.12, 0.36, 0.57, 0.6460, 0.7919, 0.8321, 0.9276, 1.0000],
+    EXIT: [0, 0.1436, 0.3227, 0.4783, 0.6160, 0.7619, 0.8221, 0.9176, 1.0000]
 };
 
 const Logo = ({
@@ -49,7 +49,7 @@ const Logo = ({
     mainPage
 }) => {
     const letters = text.split('').map(char => letterMap[char]).filter(Boolean);
-    
+
     // Determine which anchors to use based on text and mode
     let targetAnchors;
     if (text === 'KUNSTMUSIKKDESIGN') {
