@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { createRoot } from 'react-dom/client';
-import Logo from './Logo';
+import { KMDLogo, KMDExitLogo } from './Logo';
 
 const initialConstants = {
     k: 234,
@@ -17,7 +17,7 @@ const headerStyle = {
 
 const App = () => {
     const [width, setWidth] = useState(300);
-    const [text, setText] = useState('KUNSTMUSIKKDESIGN');
+    const [logoType, setLogoType] = useState('KMD');
     const [mode, setMode] = useState('KUNST');
     const [constants, setConstants] = useState(initialConstants);
 
@@ -53,68 +53,70 @@ const App = () => {
             <RangeInput id="krandom" name="Noise" min={0} max={10000000000} />
             <RangeInput id="fcap" name="Max force" min={0} max={200000} />
 
-            <h1 style={headerStyle}>Text Variants</h1>
+            <h1 style={headerStyle}>Logo Components</h1>
             <div style={{ marginBottom: '20px' }}>
-                {[
-                    { text: 'KUNSTMUSIKKDESIGN', mode: 'KUNST', label: 'KUNST' },
-                    { text: 'KUNSTMUSIKKDESIGN', mode: 'MUSIKK', label: 'MUSIKK' },
-                    { text: 'KUNSTMUSIKKDESIGN', mode: 'DESIGN', label: 'DESIGN' },
-                    { text: 'KUNSTMUSIKKDESIGN', mode: 'DEFAULT', label: 'DEFAULT' },
-                    { text: 'KMDEXIT▝', mode: 'K', label: 'K' },
-                    { text: 'KMDEXIT▝', mode: 'M', label: 'M' },
-                    { text: 'KMDEXIT▝', mode: 'D', label: 'D' },
-                    { text: 'KMDEXIT▝', mode: 'EXIT', label: 'EXIT' }
-                ].map(variant => (
-                    <button 
-                        key={variant.label} 
-                        style={{ 
-                            height: 30, 
-                            width: 80, 
-                            margin: '2px',
-                            backgroundColor: text === variant.text && mode === variant.mode ? '#007acc' : '#f0f0f0',
-                            color: text === variant.text && mode === variant.mode ? 'white' : 'black',
-                            border: 'none',
-                            borderRadius: '4px',
-                            cursor: 'pointer'
-                        }} 
-                        onClick={() => {
-                            setText(variant.text);
-                            setMode(variant.mode);
-                        }}
-                    >
-                        {variant.label}
-                    </button>
-                ))}
+                <h3>KMD Logo (KUNSTMUSIKKDESIGN)</h3>
+                <div style={{ marginBottom: '10px' }}>
+                    {[
+                        { mode: 'KUNST', label: 'KUNST' },
+                        { mode: 'MUSIKK', label: 'MUSIKK' },
+                        { mode: 'DESIGN', label: 'DESIGN' },
+                        { mode: 'DEFAULT', label: 'DEFAULT' }
+                    ].map(variant => (
+                        <button 
+                            key={variant.label} 
+                            style={{ 
+                                height: 30, 
+                                width: 80, 
+                                margin: '2px',
+                                backgroundColor: logoType === 'KMD' && mode === variant.mode ? '#007acc' : '#f0f0f0',
+                                color: logoType === 'KMD' && mode === variant.mode ? 'white' : 'black',
+                                border: 'none',
+                                borderRadius: '4px',
+                                cursor: 'pointer'
+                            }} 
+                            onClick={() => {
+                                setLogoType('KMD');
+                                setMode(variant.mode);
+                            }}
+                        >
+                            {variant.label}
+                        </button>
+                    ))}
+                </div>
+                
+                <h3>KMD Exit Logo (KMDEXIT▝)</h3>
+                <div>
+                    {[
+                        { mode: 'K', label: 'K' },
+                        { mode: 'M', label: 'M' },
+                        { mode: 'D', label: 'D' },
+                        { mode: 'EXIT', label: 'EXIT' },
+                        { mode: 'DEFAULT', label: 'DEFAULT' }
+                    ].map(variant => (
+                        <button 
+                            key={variant.label} 
+                            style={{ 
+                                height: 30, 
+                                width: 80, 
+                                margin: '2px',
+                                backgroundColor: logoType === 'EXIT' && mode === variant.mode ? '#28a745' : '#f0f0f0',
+                                color: logoType === 'EXIT' && mode === variant.mode ? 'white' : 'black',
+                                border: 'none',
+                                borderRadius: '4px',
+                                cursor: 'pointer'
+                            }} 
+                            onClick={() => {
+                                setLogoType('EXIT');
+                                setMode(variant.mode);
+                            }}
+                        >
+                            {variant.label}
+                        </button>
+                    ))}
+                </div>
             </div>
             
-            <h1 style={headerStyle}>Custom Text</h1>
-            <div style={{ marginBottom: '20px' }}>
-                <input 
-                    type="text" 
-                    value={text} 
-                    onChange={(e) => setText(e.target.value.toUpperCase())}
-                    style={{ 
-                        padding: '8px', 
-                        fontSize: '16px', 
-                        width: '200px', 
-                        marginRight: '10px' 
-                    }}
-                    placeholder="Enter custom text"
-                />
-                <button 
-                    onClick={() => setMode('DEFAULT')}
-                    style={{ 
-                        padding: '8px 12px', 
-                        backgroundColor: '#dc3545', 
-                        color: 'white', 
-                        border: 'none', 
-                        borderRadius: '4px', 
-                        cursor: 'pointer' 
-                    }}
-                >
-                    Reset to Default
-                </button>
-            </div>
 
             <h1 style={headerStyle}>Logo</h1>
             <div>
@@ -129,11 +131,15 @@ const App = () => {
                 <label style={{ marginLeft: 10 }} htmlFor="width">Width: {width}px</label>
             </div>
             <div style={{ position: 'relative', display: 'inline-block', border: '1px solid red' }}>
-                <Logo width={width} text={text} mode={mode} constants={constants} />
+                {logoType === 'KMD' ? (
+                    <KMDLogo width={width} mode={mode} constants={constants} />
+                ) : (
+                    <KMDExitLogo width={width} mode={mode} constants={constants} />
+                )}
             </div>
             
             <div style={{ marginTop: '20px', fontSize: '12px', color: '#666' }}>
-                <p><strong>Current text:</strong> {text}</p>
+                <p><strong>Current component:</strong> {logoType === 'KMD' ? 'KMDLogo (KUNSTMUSIKKDESIGN)' : 'KMDExitLogo (KMDEXIT▝)'}</p>
                 <p><strong>Mode:</strong> {mode}</p>
                 <p><strong>Available letters:</strong> K, U, N, S, T, M, I, D, E, G, X, ▝</p>
             </div>
