@@ -1,0 +1,13 @@
+src/
+docs/
+node_modules/
+.git/
+.github/
+*.log
+.DS_Store
+.env*
+.vscode/
+.eslintrc.cjs
+vite.config.js
+vite.config.lib.js
+index.html

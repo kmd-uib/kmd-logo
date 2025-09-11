@@ -1,0 +1,52 @@
+{
+  "name": "@kmd/logo",
+  "version": "1.0.0",
+  "description": "Animated KMD logo component with spring physics",
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:lib": "vite build --config vite.config.lib.js",
+    "preview": "vite preview",
+    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "prepublishOnly": "npm run build:lib"
+  },
+  "author": "Frithjof Nerdrum, Ole Christian Rynning",
+  "license": "UNLICENSED",
+  "type": "module",
+  "keywords": [
+    "react",
+    "logo",
+    "animation",
+    "spring",
+    "physics",
+    "kmd"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kmd-uib/kmd-logo.git"
+  },
+  "peerDependencies": {
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react": "^7.34.2",
+    "eslint-plugin-react-hooks": "^4.6.2",
+    "eslint-plugin-react-refresh": "^0.4.7",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "vite": "^5.3.4",
+    "vite-plugin-dts": "^4.5.4",
+    "vite-plugin-svgr": "^4.5.0"
+  }
+}
