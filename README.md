@@ -362,4 +362,4 @@ Issues and pull requests are welcome! Please ensure tests pass and code follows 
 
 ## Demo
 
-[View live demo](https://your-username.github.io/kmd-logo)
+[View live demo](https://kmd-uib.github.io/kmd-logo)
