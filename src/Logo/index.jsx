@@ -3,6 +3,7 @@ import stepper from './stepper';
 import { D, E, G, I, K, M, N, S, T, U, X, Block } from './svgs.jsx';
 
 const lastLetterWidth = 57;
+const containerHeight = 81;
 
 const defaultConstants = {
     k: 234,
@@ -13,7 +14,9 @@ const defaultConstants = {
 };
 
 // Base logo component
-const BaseLogo = ({ letters, targetAnchors, width = 400, constants, style, mainPage }) => {
+const BaseLogo = ({ letters, targetAnchors, width = 400, direction = 'horizontal', constants, style, mainPage }) => {
+    const isVertical = direction === 'vertical';
+
     const [positions, setPositions] = useState(() =>
         targetAnchors.map(pos => pos * (width - lastLetterWidth))
     );
@@ -29,7 +32,7 @@ const BaseLogo = ({ letters, targetAnchors, width = 400, constants, style, mainP
                     ...defaultConstants,
                     ...constants,
                     others: positions.filter((_, i) => i !== index),
-                    width: (width - lastLetterWidth)
+                    width: (width - lastLetterWidth),
                 };
                 return stepper(
                     positions[index],
@@ -59,18 +62,43 @@ const BaseLogo = ({ letters, targetAnchors, width = 400, constants, style, mainP
                 cancelAnimationFrame(animationRef.current);
             }
         };
-    }, [width, constants, updatePositions]);
+    }, [width, direction, constants, updatePositions]);
 
-    const containerStyle = {
-        ...style,
-        position: 'relative',
-        display: 'block',
-        height: 81,
-        width
-    };
+    // In vertical mode the outer <a> has the correct visual dimensions so that
+    // parents (borders, flex containers, etc.) size themselves correctly.
+    // An inner div is rotated 90° clockwise with translateX(containerHeight)
+    // so its visual top-left corner stays anchored at (0, 0) of the outer element.
+    if (isVertical) {
+        return (
+            <a
+                style={{ ...style, position: 'relative', display: 'block', width: containerHeight, height: width }}
+                href={mainPage}
+                title="Til forsiden"
+            >
+                <div style={{
+                    position: 'absolute',
+                    width,
+                    height: containerHeight,
+                    transform: `translateX(${containerHeight}px) rotate(90deg)`,
+                    transformOrigin: '0 0',
+                }}>
+                    {letters.map((Letter, index) => (
+                        <Letter
+                            key={index}
+                            style={{ position: 'absolute', left: positions[index] }}
+                        />
+                    ))}
+                </div>
+            </a>
+        );
+    }
 
     return (
-        <a style={containerStyle} href={mainPage} title="Til forsiden">
+        <a
+            style={{ ...style, position: 'relative', display: 'block', height: containerHeight, width }}
+            href={mainPage}
+            title="Til forsiden"
+        >
             {letters.map((Letter, index) => (
                 <Letter
                     key={index}
@@ -82,7 +110,7 @@ const BaseLogo = ({ letters, targetAnchors, width = 400, constants, style, mainP
 };
 
 // KMD Logo (KUNSTMUSIKKDESIGN)
-const KMDLogo = ({ width = 420, mode = 'DEFAULT', constants, style, mainPage }) => {
+const KMDLogo = ({ width = 420, mode = 'DEFAULT', direction = 'horizontal', constants, style, mainPage }) => {
     const letters = [K, U, N, S, T, M, U, S, I, K, K, D, E, S, I, G, N];
 
     const anchors = {
@@ -99,6 +127,7 @@ const KMDLogo = ({ width = 420, mode = 'DEFAULT', constants, style, mainPage }) 
             letters={letters}
             targetAnchors={targetAnchors}
             width={width}
+            direction={direction}
             constants={constants}
             style={style}
             mainPage={mainPage}
@@ -107,7 +136,7 @@ const KMDLogo = ({ width = 420, mode = 'DEFAULT', constants, style, mainPage }) 
 };
 
 // KMD Exit Logo (KMDEXIT▝)
-const KMDExitLogo = ({ width = 420, mode = 'DEFAULT', constants, style, mainPage }) => {
+const KMDExitLogo = ({ width = 420, mode = 'DEFAULT', direction = 'horizontal', constants, style, mainPage }) => {
     const letters = [K, M, D, E, X, I, T, Block];
 
     const anchors = {
@@ -125,6 +154,7 @@ const KMDExitLogo = ({ width = 420, mode = 'DEFAULT', constants, style, mainPage
             letters={letters}
             targetAnchors={targetAnchors}
             width={width}
+            direction={direction}
             constants={constants}
             style={style}
             mainPage={mainPage}

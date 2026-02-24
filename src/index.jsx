@@ -19,6 +19,7 @@ const App = () => {
     const [width, setWidth] = useState(300);
     const [logoType, setLogoType] = useState('KMD');
     const [mode, setMode] = useState('KUNST');
+    const [direction, setDirection] = useState('horizontal');
     const [constants, setConstants] = useState(initialConstants);
 
     const updateConstant = useCallback((id, value) => {
@@ -119,6 +120,27 @@ const App = () => {
             
 
             <h1 style={headerStyle}>Logo</h1>
+            <div style={{ marginBottom: '10px' }}>
+                {['horizontal', 'vertical'].map(d => (
+                    <button
+                        key={d}
+                        style={{
+                            height: 30,
+                            width: 100,
+                            margin: '2px',
+                            backgroundColor: direction === d ? '#555' : '#f0f0f0',
+                            color: direction === d ? 'white' : 'black',
+                            border: 'none',
+                            borderRadius: '4px',
+                            cursor: 'pointer',
+                            textTransform: 'capitalize'
+                        }}
+                        onClick={() => setDirection(d)}
+                    >
+                        {d}
+                    </button>
+                ))}
+            </div>
             <div>
                 <input 
                     id="width" 
@@ -128,20 +150,23 @@ const App = () => {
                     value={width} 
                     onChange={(event) => setWidth(parseInt(event.target.value))}
                 />
-                <label style={{ marginLeft: 10 }} htmlFor="width">Width: {width}px</label>
+                <label style={{ marginLeft: 10 }} htmlFor="width">
+                    {direction === 'vertical' ? 'Height' : 'Width'}: {width}px
+                </label>
             </div>
-            <div style={{ position: 'relative', display: 'inline-block', border: '1px solid red' }}>
-                {logoType === 'KMD' ? (
-                    <KMDLogo width={width} mode={mode} constants={constants} />
-                ) : (
-                    <KMDExitLogo width={width} mode={mode} constants={constants} />
-                )}
-            </div>
-            
-            <div style={{ marginTop: '20px', fontSize: '12px', color: '#666' }}>
-                <p><strong>Current component:</strong> {logoType === 'KMD' ? 'KMDLogo (KUNSTMUSIKKDESIGN)' : 'KMDExitLogo (KMDEXIT▝)'}</p>
-                <p><strong>Mode:</strong> {mode}</p>
-                <p><strong>Available letters:</strong> K, U, N, S, T, M, I, D, E, G, X, ▝</p>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '24px' }}>
+                <div style={{ border: '1px solid red', display: 'inline-block', flexShrink: 0 }}>
+                    {logoType === 'KMD' ? (
+                        <KMDLogo width={width} mode={mode} direction={direction} constants={constants} />
+                    ) : (
+                        <KMDExitLogo width={width} mode={mode} direction={direction} constants={constants} />
+                    )}
+                </div>
+                <div style={{ fontSize: '12px', color: '#666' }}>
+                    <p style={{ margin: '0 0 6px' }}><strong>Current component:</strong> {logoType === 'KMD' ? 'KMDLogo (KUNSTMUSIKKDESIGN)' : 'KMDExitLogo (KMDEXIT▝)'}</p>
+                    <p style={{ margin: '0 0 6px' }}><strong>Mode:</strong> {mode}</p>
+                    <p style={{ margin: 0 }}><strong>Available letters:</strong> K, U, N, S, T, M, I, D, E, G, X, ▝</p>
+                </div>
             </div>
         </div>
     );
