@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { createRoot } from 'react-dom/client';
-import { KMDLogo, KMDExitLogo } from './Logo';
+import { KMDLogo, KMDExitLogo, LOGO_DIRECTION, KMD_LOGO_MODE, KMD_EXIT_LOGO_MODE } from './Logo';
 
 const initialConstants = {
     k: 234,
@@ -18,8 +18,8 @@ const headerStyle = {
 const App = () => {
     const [width, setWidth] = useState(300);
     const [logoType, setLogoType] = useState('KMD');
-    const [mode, setMode] = useState('KUNST');
-    const [direction, setDirection] = useState('horizontal');
+    const [mode, setMode] = useState(KMD_LOGO_MODE.KUNST);
+    const [direction, setDirection] = useState(LOGO_DIRECTION.HORIZONTAL);
     const [constants, setConstants] = useState(initialConstants);
 
     const updateConstant = useCallback((id, value) => {
@@ -58,12 +58,7 @@ const App = () => {
             <div style={{ marginBottom: '20px' }}>
                 <h3>KMD Logo (KUNSTMUSIKKDESIGN)</h3>
                 <div style={{ marginBottom: '10px' }}>
-                    {[
-                        { mode: 'KUNST', label: 'KUNST' },
-                        { mode: 'MUSIKK', label: 'MUSIKK' },
-                        { mode: 'DESIGN', label: 'DESIGN' },
-                        { mode: 'DEFAULT', label: 'DEFAULT' }
-                    ].map(variant => (
+                    {Object.values(KMD_LOGO_MODE).map(m => ({ mode: m, label: m })).map(variant => (
                         <button 
                             key={variant.label} 
                             style={{ 
@@ -88,13 +83,7 @@ const App = () => {
                 
                 <h3>KMD Exit Logo (KMDEXIT▝)</h3>
                 <div>
-                    {[
-                        { mode: 'K', label: 'K' },
-                        { mode: 'M', label: 'M' },
-                        { mode: 'D', label: 'D' },
-                        { mode: 'EXIT', label: 'EXIT' },
-                        { mode: 'DEFAULT', label: 'DEFAULT' }
-                    ].map(variant => (
+                    {Object.values(KMD_EXIT_LOGO_MODE).map(m => ({ mode: m, label: m })).map(variant => (
                         <button 
                             key={variant.label} 
                             style={{ 
@@ -121,7 +110,7 @@ const App = () => {
 
             <h1 style={headerStyle}>Logo</h1>
             <div style={{ marginBottom: '10px' }}>
-                {['horizontal', 'vertical'].map(d => (
+                {Object.values(LOGO_DIRECTION).map(d => (
                     <button
                         key={d}
                         style={{

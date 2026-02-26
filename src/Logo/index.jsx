@@ -2,6 +2,26 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import stepper from './stepper';
 import { D, E, G, I, K, M, N, S, T, U, X, Block } from './svgs.jsx';
 
+export const LOGO_DIRECTION = Object.freeze({
+    HORIZONTAL: 'horizontal',
+    VERTICAL: 'vertical',
+});
+
+export const KMD_LOGO_MODE = Object.freeze({
+    KUNST: 'KUNST',
+    MUSIKK: 'MUSIKK',
+    DESIGN: 'DESIGN',
+    DEFAULT: 'DEFAULT',
+});
+
+export const KMD_EXIT_LOGO_MODE = Object.freeze({
+    K: 'K',
+    M: 'M',
+    D: 'D',
+    EXIT: 'EXIT',
+    DEFAULT: 'DEFAULT',
+});
+
 const lastLetterWidth = 57;
 const containerHeight = 81;
 
@@ -14,8 +34,8 @@ const defaultConstants = {
 };
 
 // Base logo component
-const BaseLogo = ({ letters, targetAnchors, width = 400, direction = 'horizontal', constants, style, mainPage }) => {
-    const isVertical = direction === 'vertical';
+const BaseLogo = ({ letters, targetAnchors, width = 400, direction = LOGO_DIRECTION.HORIZONTAL, constants, style, mainPage }) => {
+    const isVertical = direction === LOGO_DIRECTION.VERTICAL;
 
     const [positions, setPositions] = useState(() =>
         targetAnchors.map(pos => pos * (width - lastLetterWidth))
@@ -71,7 +91,7 @@ const BaseLogo = ({ letters, targetAnchors, width = 400, direction = 'horizontal
     if (isVertical) {
         return (
             <a
-                style={{ ...style, position: 'relative', display: 'block', width: containerHeight, height: width }}
+                style={{ position: 'relative', display: 'block', width: containerHeight, height: width, ...style }}
                 href={mainPage}
                 title="Til forsiden"
             >
@@ -95,7 +115,7 @@ const BaseLogo = ({ letters, targetAnchors, width = 400, direction = 'horizontal
 
     return (
         <a
-            style={{ ...style, position: 'relative', display: 'block', height: containerHeight, width }}
+            style={{ position: 'relative', display: 'block', height: containerHeight, width, ...style }}
             href={mainPage}
             title="Til forsiden"
         >
@@ -110,7 +130,7 @@ const BaseLogo = ({ letters, targetAnchors, width = 400, direction = 'horizontal
 };
 
 // KMD Logo (KUNSTMUSIKKDESIGN)
-const KMDLogo = ({ width = 420, mode = 'DEFAULT', direction = 'horizontal', constants, style, mainPage }) => {
+const KMDLogo = ({ width = 420, mode = KMD_LOGO_MODE.DEFAULT, direction = LOGO_DIRECTION.HORIZONTAL, constants, style, mainPage }) => {
     const letters = [K, U, N, S, T, M, U, S, I, K, K, D, E, S, I, G, N];
 
     const anchors = {
@@ -136,7 +156,7 @@ const KMDLogo = ({ width = 420, mode = 'DEFAULT', direction = 'horizontal', cons
 };
 
 // KMD Exit Logo (KMDEXIT▝)
-const KMDExitLogo = ({ width = 420, mode = 'DEFAULT', direction = 'horizontal', constants, style, mainPage }) => {
+const KMDExitLogo = ({ width = 420, mode = KMD_EXIT_LOGO_MODE.DEFAULT, direction = LOGO_DIRECTION.HORIZONTAL, constants, style, mainPage }) => {
     const letters = [K, M, D, E, X, I, T, Block];
 
     const anchors = {
@@ -163,5 +183,5 @@ const KMDExitLogo = ({ width = 420, mode = 'DEFAULT', direction = 'horizontal', 
 };
 
 // Export both components
-export { KMDLogo, KMDExitLogo };
+export { KMDLogo, KMDExitLogo, };
 export default KMDLogo;
