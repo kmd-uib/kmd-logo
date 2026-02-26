@@ -27,6 +27,9 @@ export const LOGO_COLOR = Object.freeze({
     WHITE: 'white',
 } as const);
 
+/** Alias for {@link LOGO_DIRECTION} */
+export const KMDLogoDirection = LOGO_DIRECTION;
+
 export type LogoDirection = typeof LOGO_DIRECTION[keyof typeof LOGO_DIRECTION];
 export type KMDLogoMode = typeof KMD_LOGO_MODE[keyof typeof KMD_LOGO_MODE];
 export type KMDExitLogoMode = typeof KMD_EXIT_LOGO_MODE[keyof typeof KMD_EXIT_LOGO_MODE];
@@ -47,7 +50,7 @@ export interface KMDLogoProps {
     color?: LogoColor;
     constants?: SpringConstants;
     style?: CSSProperties;
-    mainPage?: string;
+    href?: string;
 }
 
 export interface KMDExitLogoProps {
@@ -57,7 +60,7 @@ export interface KMDExitLogoProps {
     color?: LogoColor;
     constants?: SpringConstants;
     style?: CSSProperties;
-    mainPage?: string;
+    href?: string;
 }
 
 type LetterComponent = ComponentType<SVGProps<SVGSVGElement>>;
@@ -81,10 +84,10 @@ interface BaseLogoProps {
     color: LogoColor;
     constants?: SpringConstants;
     style?: CSSProperties;
-    mainPage?: string;
+    href?: string;
 }
 
-const BaseLogo = ({ letters, targetAnchors, width, direction, color, constants, style, mainPage }: BaseLogoProps) => {
+const BaseLogo = ({ letters, targetAnchors, width, direction, color, constants, style, href }: BaseLogoProps) => {
     const isVertical = direction === LOGO_DIRECTION.VERTICAL;
 
     const [positions, setPositions] = useState<number[]>(() =>
@@ -147,7 +150,7 @@ const BaseLogo = ({ letters, targetAnchors, width, direction, color, constants, 
         return (
             <a
                 style={{ position: 'relative', display: 'block', width: containerHeight, height: width, ...style }}
-                href={mainPage}
+                href={href}
                 title="Til forsiden"
             >
                 <div style={{
@@ -172,7 +175,7 @@ const BaseLogo = ({ letters, targetAnchors, width, direction, color, constants, 
     return (
         <a
             style={{ position: 'relative', display: 'block', height: containerHeight, width, ...style }}
-            href={mainPage}
+            href={href}
             title="Til forsiden"
         >
             {letters.map((Letter, index) => (
@@ -193,7 +196,7 @@ const KMDLogo = ({
     color = LOGO_COLOR.BLACK,
     constants,
     style,
-    mainPage,
+    href,
 }: KMDLogoProps) => {
     const letters: LetterComponent[] = [K, U, N, S, T, M, U, S, I, K, K, D, E, S, I, G, N];
 
@@ -213,7 +216,7 @@ const KMDLogo = ({
             color={color}
             constants={constants}
             style={style}
-            mainPage={mainPage}
+            href={href}
         />
     );
 };
@@ -225,7 +228,7 @@ const KMDExitLogo = ({
     color = LOGO_COLOR.BLACK,
     constants,
     style,
-    mainPage,
+    href,
 }: KMDExitLogoProps) => {
     const letters: LetterComponent[] = [K, M, D, E, X, I, T, Block];
 
@@ -246,7 +249,7 @@ const KMDExitLogo = ({
             color={color}
             constants={constants}
             style={style}
-            mainPage={mainPage}
+            href={href}
         />
     );
 };
