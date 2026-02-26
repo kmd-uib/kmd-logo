@@ -38,18 +38,24 @@ export interface SpringConstants {
 }
 export interface KMDLogoProps {
     width?: number;
-    mode?: KMDLogoMode;
-    direction?: LogoDirection;
-    color?: LogoColor;
+    /** @default 'DEFAULT' */
+    mode?: 'KUNST' | 'MUSIKK' | 'DESIGN' | 'DEFAULT';
+    /** @default 'horizontal' */
+    direction?: 'horizontal' | 'vertical';
+    /** @default 'white' */
+    color?: 'black' | 'white';
     constants?: SpringConstants;
     style?: CSSProperties;
     href?: string;
 }
 export interface KMDExitLogoProps {
     width?: number;
-    mode?: KMDExitLogoMode;
-    direction?: LogoDirection;
-    color?: LogoColor;
+    /** @default 'DEFAULT' */
+    mode?: 'K' | 'M' | 'D' | 'EXIT' | 'DEFAULT';
+    /** @default 'horizontal' */
+    direction?: 'horizontal' | 'vertical';
+    /** @default 'white' */
+    color?: 'black' | 'white';
     constants?: SpringConstants;
     style?: CSSProperties;
     href?: string;
