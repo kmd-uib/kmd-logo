@@ -1,9 +1,25 @@
 const secondsPerFrame = 1 / 60;
 const precision = 2;
 
-const sum = (arr) => arr.reduce((acc, curr) => acc + curr, 0);
+export interface StepperParams {
+    k: number;
+    b: number;
+    others: number[];
+    ki: number;
+    krandom: number;
+    fcap: number;
+    width?: number;
+}
 
-const stepper = (x, v, destX, { k, b, others, ki, krandom, fcap }) => {
+export interface StepperResult {
+    newX: number;
+    newV: number;
+    done: boolean;
+}
+
+const sum = (arr: number[]): number => arr.reduce((acc, curr) => acc + curr, 0);
+
+const stepper = (x: number, v: number, destX: number, { k, b, others, ki, krandom, fcap }: StepperParams): StepperResult => {
     const Fspring = -k * (x - destX);
     const Fdamper = -b * v;
     const Finteraction = sum(others.map(pos => (Math.sign(x - pos) * ki) / Math.max(Math.pow(x - pos, 2), 0.00000000001)));
@@ -20,18 +36,10 @@ const stepper = (x, v, destX, { k, b, others, ki, krandom, fcap }) => {
     const newX = x + newV * secondsPerFrame;
 
     if (Math.abs(newV) < precision && Math.abs(newX - destX) < precision) {
-        return {
-            newX: destX,
-            newV: 0,
-            done: true,
-        };
+        return { newX: destX, newV: 0, done: true };
     }
 
-    return {
-        newX,
-        newV,
-        done: false,
-    };
+    return { newX, newV, done: false };
 };
 
 export default stepper;
