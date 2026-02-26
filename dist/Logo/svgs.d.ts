@@ -1,0 +1,15 @@
+import type { SVGProps } from 'react';
+type SvgProps = SVGProps<SVGSVGElement>;
+export declare const K: (props: SvgProps) => import("react/jsx-runtime").JSX.Element;
+export declare const U: (props: SvgProps) => import("react/jsx-runtime").JSX.Element;
+export declare const N: (props: SvgProps) => import("react/jsx-runtime").JSX.Element;
+export declare const S: (props: SvgProps) => import("react/jsx-runtime").JSX.Element;
+export declare const T: (props: SvgProps) => import("react/jsx-runtime").JSX.Element;
+export declare const M: (props: SvgProps) => import("react/jsx-runtime").JSX.Element;
+export declare const I: (props: SvgProps) => import("react/jsx-runtime").JSX.Element;
+export declare const D: (props: SvgProps) => import("react/jsx-runtime").JSX.Element;
+export declare const E: (props: SvgProps) => import("react/jsx-runtime").JSX.Element;
+export declare const G: (props: SvgProps) => import("react/jsx-runtime").JSX.Element;
+export declare const X: (props: SvgProps) => import("react/jsx-runtime").JSX.Element;
+export declare const Block: (props: SvgProps) => import("react/jsx-runtime").JSX.Element;
+export {};
