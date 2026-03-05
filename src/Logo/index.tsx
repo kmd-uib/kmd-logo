@@ -43,7 +43,15 @@ export interface SpringConstants {
     fcap?: number;
 }
 
+export interface LogoLink {
+    name: string;
+    url: string;
+    /** Font size in px. @default 10 */
+    fontSize?: number;
+}
+
 export interface KMDLogoProps {
+    id?: string;
     width?: number;
     /** @default 'DEFAULT' */
     mode?: 'KUNST' | 'MUSIKK' | 'DESIGN' | 'DEFAULT';
@@ -54,9 +62,11 @@ export interface KMDLogoProps {
     constants?: SpringConstants;
     style?: CSSProperties;
     href?: string;
+    link?: LogoLink;
 }
 
 export interface KMDExitLogoProps {
+    id?: string;
     width?: number;
     /** @default 'DEFAULT' */
     mode?: 'K' | 'M' | 'D' | 'EXIT' | 'DEFAULT';
@@ -64,9 +74,12 @@ export interface KMDExitLogoProps {
     direction?: 'horizontal' | 'vertical';
     /** @default 'white' */
     color?: 'black' | 'white';
+    /** @default true */
+    block?: boolean;
     constants?: SpringConstants;
     style?: CSSProperties;
     href?: string;
+    link?: LogoLink;
 }
 
 type LetterComponent = ComponentType<SVGProps<SVGSVGElement>>;
@@ -83,6 +96,7 @@ const lastLetterWidth = 57;
 const containerHeight = 81;
 
 interface BaseLogoProps {
+    id?: string;
     letters: LetterComponent[];
     targetAnchors: number[];
     width: number;
@@ -91,9 +105,10 @@ interface BaseLogoProps {
     constants?: SpringConstants;
     style?: CSSProperties;
     href?: string;
+    link?: LogoLink;
 }
 
-const BaseLogo = ({ letters, targetAnchors, width, direction, color, constants, style, href }: BaseLogoProps) => {
+const BaseLogo = ({ id, letters, targetAnchors, width, direction, color, constants, style, href, link }: BaseLogoProps) => {
     const isVertical = direction === LOGO_DIRECTION.VERTICAL;
 
     const [positions, setPositions] = useState<number[]>(() =>
@@ -148,6 +163,18 @@ const BaseLogo = ({ letters, targetAnchors, width, direction, color, constants, 
         };
     }, [width, direction, constants, updatePositions]);
 
+    const linkFontSize = link?.fontSize ?? 10;
+    const linkPadding = link ? linkFontSize + 4 : 0;
+
+    const linkEl = link ? (
+        <a
+            href={link.url}
+            style={{ position: 'absolute', bottom: 0, left: 0, color, fontSize: linkFontSize, lineHeight: 1, textDecoration: 'none', whiteSpace: 'nowrap' }}
+        >
+            {link.name}
+        </a>
+    ) : null;
+
     // In vertical mode the outer <a> has the correct visual dimensions so that
     // parents (borders, flex containers, etc.) size themselves correctly.
     // An inner div is rotated 90° clockwise with translateX(containerHeight)
@@ -155,7 +182,8 @@ const BaseLogo = ({ letters, targetAnchors, width, direction, color, constants, 
     if (isVertical) {
         return (
             <a
-                style={{ position: 'relative', display: 'block', width: containerHeight, height: width, ...style }}
+                id={id}
+                style={{ position: 'relative', display: 'block', width: containerHeight, height: width, paddingBottom: linkPadding, boxSizing: 'content-box', ...style }}
                 href={href}
                 title="Til forsiden"
             >
@@ -174,13 +202,15 @@ const BaseLogo = ({ letters, targetAnchors, width, direction, color, constants, 
                         />
                     ))}
                 </div>
+                {linkEl}
             </a>
         );
     }
 
     return (
         <a
-            style={{ position: 'relative', display: 'block', height: containerHeight, width, ...style }}
+            id={id}
+            style={{ position: 'relative', display: 'block', height: containerHeight, width, paddingBottom: linkPadding, boxSizing: 'content-box', ...style }}
             href={href}
             title="Til forsiden"
         >
@@ -191,11 +221,13 @@ const BaseLogo = ({ letters, targetAnchors, width, direction, color, constants, 
                     style={{ position: 'absolute', left: positions[index] }}
                 />
             ))}
+            {linkEl}
         </a>
     );
 };
 
 const KMDLogo = ({
+    id,
     width = 420,
     mode = KMD_LOGO_MODE.DEFAULT,
     direction = LOGO_DIRECTION.HORIZONTAL,
@@ -203,6 +235,7 @@ const KMDLogo = ({
     constants,
     style,
     href,
+    link,
 }: KMDLogoProps) => {
     const letters: LetterComponent[] = [K, U, N, S, T, M, U, S, I, K, K, D, E, S, I, G, N];
 
@@ -215,6 +248,7 @@ const KMDLogo = ({
 
     return (
         <BaseLogo
+            id={id}
             letters={letters}
             targetAnchors={anchors[mode] ?? anchors.DEFAULT}
             width={width}
@@ -223,39 +257,48 @@ const KMDLogo = ({
             constants={constants}
             style={style}
             href={href}
+            link={link}
         />
     );
 };
 
 const KMDExitLogo = ({
+    id,
     width = 420,
     mode = KMD_EXIT_LOGO_MODE.DEFAULT,
     direction = LOGO_DIRECTION.HORIZONTAL,
     color = LOGO_COLOR.WHITE,
+    block = true,
     constants,
     style,
     href,
+    link,
 }: KMDExitLogoProps) => {
-    const letters: LetterComponent[] = [K, M, D, E, X, I, T, Block];
+    const allLetters: LetterComponent[] = [K, M, D, E, X, I, T, Block];
+    const letters = block ? allLetters : allLetters.slice(0, 7);
 
     const anchors: Record<KMDExitLogoMode, number[]> = {
-        K:       [0, 0.1836, 0.3427, 0.4783, 0.6160, 0.7619, 0.7721, 0.9176, 1.0000],
-        M:       [0, 0.1636, 0.3827, 0.4983, 0.6160, 0.7619, 0.7721, 0.9176, 1.0000],
-        D:       [0, 0.1236, 0.3427, 0.5183, 0.6460, 0.7219, 0.7721, 0.9176, 1.0000],
-        EXIT:    [0, 0.1436, 0.3227, 0.4783, 0.6160, 0.7619, 0.7721, 0.9176, 1.0000],
-        DEFAULT: [0, 0.1436, 0.3227, 0.4783, 0.6160, 0.7619, 0.7721, 0.9176, 1.0000],
+        K:       [0, 0.50, 0.58, 0.66, 0.74, 0.83, 0.85, 1.0],
+        M:       [0, 0.35, 0.65, 0.73, 0.81, 0.88, 0.90, 1.0],
+        D:       [0, 0.08, 0.16, 0.55, 0.68, 0.80, 0.82, 1.0],
+        EXIT:    [0, 0.09, 0.17, 0.38, 0.55, 0.72, 0.86, 1.0],
+        DEFAULT: [0, 0.1436, 0.3227, 0.4783, 0.6160, 0.7619, 0.7721, 0.9176],
     };
+
+    const targetAnchors = (anchors[mode] ?? anchors.DEFAULT).slice(0, letters.length);
 
     return (
         <BaseLogo
+            id={id}
             letters={letters}
-            targetAnchors={anchors[mode] ?? anchors.DEFAULT}
+            targetAnchors={targetAnchors}
             width={width}
             direction={direction}
             color={color}
             constants={constants}
             style={style}
             href={href}
+            link={link}
         />
     );
 };

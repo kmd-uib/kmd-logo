@@ -1,7 +1,7 @@
 import { useState, useCallback, type CSSProperties } from 'react';
 import { createRoot } from 'react-dom/client';
 import { KMDLogo, KMDExitLogo, LOGO_DIRECTION, KMD_LOGO_MODE, KMD_EXIT_LOGO_MODE } from './Logo';
-import type { SpringConstants, LogoDirection, KMDLogoMode, KMDExitLogoMode } from './Logo';
+import type { SpringConstants, LogoDirection, KMDLogoMode, KMDExitLogoMode, LogoLink } from './Logo';
 
 const initialConstants: SpringConstants = {
     k: 234,
@@ -48,6 +48,11 @@ const App = () => {
     const [logoType, setLogoType] = useState<LogoType>('KMD');
     const [mode, setMode] = useState<KMDLogoMode | KMDExitLogoMode>(KMD_LOGO_MODE.KUNST);
     const [direction, setDirection] = useState<LogoDirection>(LOGO_DIRECTION.HORIZONTAL);
+    const [color, setColor] = useState<'black' | 'white'>('white');
+    const [block, setBlock] = useState(true);
+    const [link, setLink] = useState<LogoLink | undefined>(undefined);
+    const [linkName, setLinkName] = useState('kmd.uib.no');
+    const [linkUrl, setLinkUrl] = useState('https://kmd.uib.no');
     const [constants, setConstants] = useState<SpringConstants>(initialConstants);
 
     const updateConstant = useCallback((id: keyof SpringConstants, value: string) => {
@@ -110,7 +115,65 @@ const App = () => {
                 </div>
             </div>
 
+            {logoType === 'EXIT' && (
+                <div style={{ marginBottom: '10px' }}>
+                    <label>
+                        <input type="checkbox" checked={block} onChange={e => setBlock(e.target.checked)} style={{ marginRight: 6 }} />
+                        Show block (▝)
+                    </label>
+                </div>
+            )}
+
+            <div style={{ marginBottom: '10px' }}>
+                <label>
+                    <input
+                        type="checkbox"
+                        checked={link !== undefined}
+                        onChange={e => setLink(e.target.checked ? { name: linkName, url: linkUrl } : undefined)}
+                        style={{ marginRight: 6 }}
+                    />
+                    Show link
+                </label>
+                {link !== undefined && (
+                    <span style={{ marginLeft: 12 }}>
+                        <input
+                            value={linkName}
+                            onChange={e => { setLinkName(e.target.value); setLink({ name: e.target.value, url: linkUrl }); }}
+                            placeholder="name"
+                            style={{ marginRight: 6, width: 120 }}
+                        />
+                        <input
+                            value={linkUrl}
+                            onChange={e => { setLinkUrl(e.target.value); setLink({ name: linkName, url: e.target.value }); }}
+                            placeholder="url"
+                            style={{ width: 200 }}
+                        />
+                    </span>
+                )}
+            </div>
+
             <h1 style={headerStyle}>Logo</h1>
+            <div style={{ marginBottom: '10px' }}>
+                {(['white', 'black'] as const).map(c => (
+                    <button
+                        key={c}
+                        style={{
+                            height: 30,
+                            width: 80,
+                            margin: '2px',
+                            backgroundColor: color === c ? '#333' : '#f0f0f0',
+                            color: color === c ? 'white' : 'black',
+                            border: 'none',
+                            borderRadius: '4px',
+                            cursor: 'pointer',
+                            textTransform: 'capitalize',
+                        }}
+                        onClick={() => setColor(c)}
+                    >
+                        {c}
+                    </button>
+                ))}
+            </div>
             <div style={{ marginBottom: '10px' }}>
                 {Object.values(LOGO_DIRECTION).map(d => (
                     <button
@@ -146,11 +209,11 @@ const App = () => {
                 </label>
             </div>
             <div style={{ display: 'flex', alignItems: 'flex-start', gap: '24px' }}>
-                <div style={{ border: '1px solid red', display: 'inline-block', flexShrink: 0 }}>
+                <div style={{ border: '1px solid red', display: 'inline-block', flexShrink: 0, backgroundColor: color === 'white' ? 'black' : 'white' }}>
                     {logoType === 'KMD' ? (
-                        <KMDLogo width={width} mode={mode as KMDLogoMode} direction={direction} constants={constants} />
+                        <KMDLogo width={width} mode={mode as KMDLogoMode} direction={direction} color={color} link={link} constants={constants} />
                     ) : (
-                        <KMDExitLogo width={width} mode={mode as KMDExitLogoMode} direction={direction} constants={constants} />
+                        <KMDExitLogo width={width} mode={mode as KMDExitLogoMode} direction={direction} color={color} block={block} link={link} constants={constants} />
                     )}
                 </div>
                 <div style={{ fontSize: '12px', color: '#666' }}>
