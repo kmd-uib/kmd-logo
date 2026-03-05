@@ -36,7 +36,14 @@ export interface SpringConstants {
     krandom?: number;
     fcap?: number;
 }
+export interface LogoLink {
+    name: string;
+    url: string;
+    /** Font size in px. @default 10 */
+    fontSize?: number;
+}
 export interface KMDLogoProps {
+    id?: string;
     width?: number;
     /** @default 'DEFAULT' */
     mode?: 'KUNST' | 'MUSIKK' | 'DESIGN' | 'DEFAULT';
@@ -47,8 +54,10 @@ export interface KMDLogoProps {
     constants?: SpringConstants;
     style?: CSSProperties;
     href?: string;
+    link?: LogoLink;
 }
 export interface KMDExitLogoProps {
+    id?: string;
     width?: number;
     /** @default 'DEFAULT' */
     mode?: 'K' | 'M' | 'D' | 'EXIT' | 'DEFAULT';
@@ -56,11 +65,14 @@ export interface KMDExitLogoProps {
     direction?: 'horizontal' | 'vertical';
     /** @default 'white' */
     color?: 'black' | 'white';
+    /** @default true */
+    block?: boolean;
     constants?: SpringConstants;
     style?: CSSProperties;
     href?: string;
+    link?: LogoLink;
 }
-declare const KMDLogo: ({ width, mode, direction, color, constants, style, href, }: KMDLogoProps) => import("react/jsx-runtime").JSX.Element;
-declare const KMDExitLogo: ({ width, mode, direction, color, constants, style, href, }: KMDExitLogoProps) => import("react/jsx-runtime").JSX.Element;
+declare const KMDLogo: ({ id, width, mode, direction, color, constants, style, href, link, }: KMDLogoProps) => import("react/jsx-runtime").JSX.Element;
+declare const KMDExitLogo: ({ id, width, mode, direction, color, block, constants, style, href, link, }: KMDExitLogoProps) => import("react/jsx-runtime").JSX.Element;
 export { KMDLogo, KMDExitLogo };
 export default KMDLogo;
