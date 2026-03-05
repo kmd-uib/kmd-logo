@@ -1,6 +1,6 @@
 {
   "name": "@kmd/logo",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "description": "Animated KMD logo component with spring physics",
   "main": "dist/index.js",
   "module": "dist/index.es.js",

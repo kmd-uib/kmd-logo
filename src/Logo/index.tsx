@@ -164,11 +164,18 @@ const BaseLogo = ({ id, letters, targetAnchors, width, direction, color, constan
     }, [width, direction, constants, updatePositions]);
 
     const linkFontSize = link?.fontSize ?? 10;
-    const linkPadding = link ? linkFontSize + 4 : 0;
+    const linkPadding = link ? linkFontSize + 20 : 0;
+
+    const isExternalUrl = (url: string) => /^(https?:)?\/\/|^mailto:/.test(url);
 
     const linkEl = link ? (
         <a
             href={link.url}
+            className="kmd-logo-link"
+            {...(isExternalUrl(link.url)
+                ? { target: '_blank', rel: 'noopener noreferrer' }
+                : {}
+            )}
             style={{ position: 'absolute', bottom: 0, left: 0, color, fontSize: linkFontSize, lineHeight: 1, textDecoration: 'none', whiteSpace: 'nowrap' }}
         >
             {link.name}
