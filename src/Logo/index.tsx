@@ -175,54 +175,62 @@ const BaseLogo = ({ id, letters, targetAnchors, width, direction, color, constan
         </a>
     ) : null;
 
-    // In vertical mode the outer <a> has the correct visual dimensions so that
+    // In vertical mode the outer div has the correct visual dimensions so that
     // parents (borders, flex containers, etc.) size themselves correctly.
     // An inner div is rotated 90° clockwise with translateX(containerHeight)
     // so its visual top-left corner stays anchored at (0, 0) of the outer element.
     if (isVertical) {
         return (
-            <a
+            <div
                 id={id}
-                style={{ position: 'relative', display: 'block', width: containerHeight, height: width, paddingBottom: linkPadding, boxSizing: 'content-box', ...style }}
-                href={href}
-                title="Til forsiden"
+                style={{ position: 'relative', display: 'block', width: containerHeight, height: width + linkPadding, ...style }}
             >
-                <div style={{
-                    position: 'absolute',
-                    width,
-                    height: containerHeight,
-                    transform: `translateX(${containerHeight}px) rotate(90deg)`,
-                    transformOrigin: '0 0',
-                }}>
-                    {letters.map((Letter, index) => (
-                        <Letter
-                            key={index}
-                            fill={color}
-                            style={{ position: 'absolute', left: positions[index] }}
-                        />
-                    ))}
-                </div>
+                <a
+                    href={href}
+                    title="Til forsiden"
+                    style={{ position: 'absolute', top: 0, left: 0, width: containerHeight, height: width }}
+                >
+                    <div style={{
+                        position: 'absolute',
+                        width,
+                        height: containerHeight,
+                        transform: `translateX(${containerHeight}px) rotate(90deg)`,
+                        transformOrigin: '0 0',
+                    }}>
+                        {letters.map((Letter, index) => (
+                            <Letter
+                                key={index}
+                                fill={color}
+                                style={{ position: 'absolute', left: positions[index] }}
+                            />
+                        ))}
+                    </div>
+                </a>
                 {linkEl}
-            </a>
+            </div>
         );
     }
 
     return (
-        <a
+        <div
             id={id}
-            style={{ position: 'relative', display: 'block', height: containerHeight, width, paddingBottom: linkPadding, boxSizing: 'content-box', ...style }}
-            href={href}
-            title="Til forsiden"
+            style={{ position: 'relative', display: 'inline-block', height: containerHeight + linkPadding, width, ...style }}
         >
-            {letters.map((Letter, index) => (
-                <Letter
-                    key={index}
-                    fill={color}
-                    style={{ position: 'absolute', left: positions[index] }}
-                />
-            ))}
+            <a
+                href={href}
+                title="Til forsiden"
+                style={{ position: 'absolute', top: 0, left: 0, width, height: containerHeight }}
+            >
+                {letters.map((Letter, index) => (
+                    <Letter
+                        key={index}
+                        fill={color}
+                        style={{ position: 'absolute', left: positions[index] }}
+                    />
+                ))}
+            </a>
             {linkEl}
-        </a>
+        </div>
     );
 };
 
