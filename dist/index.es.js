@@ -313,14 +313,17 @@ const ae = 1 / 60, le = 2, ce = (t) => t.reduce((c, i) => c + i, 0), je = (t, c,
   }, [T]), re(() => (R.current !== null && cancelAnimationFrame(R.current), T(), () => {
     R.current !== null && cancelAnimationFrame(R.current);
   }), [s, l, p, T]);
-  const A = m?.fontSize ?? 10, b = m ? A + 20 : 0, F = (E) => /^(https?:)?\/\/|^mailto:/.test(E), V = m ? /* @__PURE__ */ n.jsx(
+  const A = m?.fontSize ?? 10, b = m ? A + 20 : 0, F = (E) => /^(https?:)?\/\/|^mailto:/.test(E), V = m ? /* @__PURE__ */ n.jsxs(
     "a",
     {
       href: m.url,
       className: "kmd-logo-link",
       ...F(m.url) ? { target: "_blank", rel: "noopener noreferrer" } : {},
       style: { position: "absolute", bottom: 0, left: 0, color: a, fontSize: A, lineHeight: 1, textDecoration: "none", whiteSpace: "nowrap" },
-      children: m.name
+      children: [
+        "→ ",
+        m.name
+      ]
     }
   ) : null;
   return w ? /* @__PURE__ */ n.jsxs(

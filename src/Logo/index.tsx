@@ -178,7 +178,7 @@ const BaseLogo = ({ id, letters, targetAnchors, width, direction, color, constan
             )}
             style={{ position: 'absolute', bottom: 0, left: 0, color, fontSize: linkFontSize, lineHeight: 1, textDecoration: 'none', whiteSpace: 'nowrap' }}
         >
-            {link.name}
+            → {link.name}
         </a>
     ) : null;
 
