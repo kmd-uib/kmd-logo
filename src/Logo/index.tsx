@@ -1,321 +1,421 @@
-import { useState, useEffect, useRef, useCallback, type CSSProperties, type ComponentType, type SVGProps } from 'react';
-import stepper, { type StepperParams } from './stepper';
-import { D, E, G, I, K, M, N, S, T, U, X, Block } from './svgs';
+import {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  type CSSProperties,
+  type ComponentType,
+  type SVGProps,
+} from "react";
+import stepper, { type StepperParams } from "./stepper";
+import { D, E, G, I, K, M, N, S, T, U, X, Block } from "./svgs";
 
 export const LOGO_DIRECTION = Object.freeze({
-    HORIZONTAL: 'horizontal',
-    VERTICAL: 'vertical',
+  HORIZONTAL: "horizontal",
+  VERTICAL: "vertical",
 } as const);
 
 export const KMD_LOGO_MODE = Object.freeze({
-    KUNST: 'KUNST',
-    MUSIKK: 'MUSIKK',
-    DESIGN: 'DESIGN',
-    DEFAULT: 'DEFAULT',
+  KUNST: "KUNST",
+  MUSIKK: "MUSIKK",
+  DESIGN: "DESIGN",
+  DEFAULT: "DEFAULT",
 } as const);
 
 export const KMD_EXIT_LOGO_MODE = Object.freeze({
-    K: 'K',
-    M: 'M',
-    D: 'D',
-    EXIT: 'EXIT',
-    DEFAULT: 'DEFAULT',
+  K: "K",
+  M: "M",
+  D: "D",
+  EXIT: "EXIT",
+  DEFAULT: "DEFAULT",
 } as const);
 
 export const LOGO_COLOR = Object.freeze({
-    BLACK: 'black',
-    WHITE: 'white',
+  BLACK: "black",
+  WHITE: "white",
 } as const);
 
 /** Alias for {@link LOGO_DIRECTION} */
 export const KMDLogoDirection = LOGO_DIRECTION;
 
-export type LogoDirection = typeof LOGO_DIRECTION[keyof typeof LOGO_DIRECTION];
-export type KMDLogoMode = typeof KMD_LOGO_MODE[keyof typeof KMD_LOGO_MODE];
-export type KMDExitLogoMode = typeof KMD_EXIT_LOGO_MODE[keyof typeof KMD_EXIT_LOGO_MODE];
-export type LogoColor = typeof LOGO_COLOR[keyof typeof LOGO_COLOR];
+export type LogoDirection =
+  (typeof LOGO_DIRECTION)[keyof typeof LOGO_DIRECTION];
+export type KMDLogoMode = (typeof KMD_LOGO_MODE)[keyof typeof KMD_LOGO_MODE];
+export type KMDExitLogoMode =
+  (typeof KMD_EXIT_LOGO_MODE)[keyof typeof KMD_EXIT_LOGO_MODE];
+export type LogoColor = (typeof LOGO_COLOR)[keyof typeof LOGO_COLOR];
 
 export interface SpringConstants {
-    k?: number;
-    b?: number;
-    ki?: number;
-    krandom?: number;
-    fcap?: number;
+  k?: number;
+  b?: number;
+  ki?: number;
+  krandom?: number;
+  fcap?: number;
 }
 
 export interface LogoLink {
-    name: string;
-    url: string;
-    /** Font size in px. @default 10 */
-    fontSize?: number;
+  name: string;
+  url: string;
+  /** Font size in px. @default 10 */
+  fontSize?: number;
 }
 
 export interface KMDLogoProps {
-    id?: string;
-    width?: number;
-    /** @default 'DEFAULT' */
-    mode?: 'KUNST' | 'MUSIKK' | 'DESIGN' | 'DEFAULT';
-    /** @default 'horizontal' */
-    direction?: 'horizontal' | 'vertical';
-    /** @default 'white' */
-    color?: 'black' | 'white';
-    constants?: SpringConstants;
-    style?: CSSProperties;
-    href?: string;
-    link?: LogoLink;
+  id?: string;
+  width?: number;
+  /** @default 'DEFAULT' */
+  mode?: "KUNST" | "MUSIKK" | "DESIGN" | "DEFAULT";
+  /** @default 'horizontal' */
+  direction?: "horizontal" | "vertical";
+  /** @default 'white' */
+  color?: "black" | "white";
+  constants?: SpringConstants;
+  style?: CSSProperties;
+  href?: string;
+  link?: LogoLink;
 }
 
 export interface KMDExitLogoProps {
-    id?: string;
-    width?: number;
-    /** @default 'DEFAULT' */
-    mode?: 'K' | 'M' | 'D' | 'EXIT' | 'DEFAULT';
-    /** @default 'horizontal' */
-    direction?: 'horizontal' | 'vertical';
-    /** @default 'white' */
-    color?: 'black' | 'white';
-    /** @default true */
-    block?: boolean;
-    constants?: SpringConstants;
-    style?: CSSProperties;
-    href?: string;
-    link?: LogoLink;
+  id?: string;
+  width?: number;
+  /** @default 'DEFAULT' */
+  mode?: "K" | "M" | "D" | "EXIT" | "DEFAULT";
+  /** @default 'horizontal' */
+  direction?: "horizontal" | "vertical";
+  /** @default 'white' */
+  color?: "black" | "white";
+  /** @default true */
+  block?: boolean;
+  constants?: SpringConstants;
+  style?: CSSProperties;
+  href?: string;
+  link?: LogoLink;
 }
 
 type LetterComponent = ComponentType<SVGProps<SVGSVGElement>>;
 
 const defaultConstants: Required<SpringConstants> = {
-    k: 234,
-    b: 18,
-    ki: 389,
-    krandom: 1992700730,
-    fcap: 15036,
+  k: 234,
+  b: 18,
+  ki: 389,
+  krandom: 1992700730,
+  fcap: 15036,
 };
 
 const lastLetterWidth = 57;
 const containerHeight = 81;
 
 interface BaseLogoProps {
-    id?: string;
-    letters: LetterComponent[];
-    targetAnchors: number[];
-    width: number;
-    direction: LogoDirection;
-    color: LogoColor;
-    constants?: SpringConstants;
-    style?: CSSProperties;
-    href?: string;
-    link?: LogoLink;
+  id?: string;
+  letters: LetterComponent[];
+  targetAnchors: number[];
+  width: number;
+  direction: LogoDirection;
+  color: LogoColor;
+  constants?: SpringConstants;
+  style?: CSSProperties;
+  href?: string;
+  link?: LogoLink;
 }
 
-const BaseLogo = ({ id, letters, targetAnchors, width, direction, color, constants, style, href, link }: BaseLogoProps) => {
-    const isVertical = direction === LOGO_DIRECTION.VERTICAL;
+const BaseLogo = ({
+  id,
+  letters,
+  targetAnchors,
+  width,
+  direction,
+  color,
+  constants,
+  style,
+  href,
+  link,
+}: BaseLogoProps) => {
+  const isVertical = direction === LOGO_DIRECTION.VERTICAL;
 
-    const [positions, setPositions] = useState<number[]>(() =>
-        targetAnchors.map(pos => pos * (width - lastLetterWidth))
-    );
-    const [velocities, setVelocities] = useState<number[]>(() =>
-        letters.map(() => 0)
-    );
-    const animationRef = useRef<number | null>(null);
-    const loopRef = useRef<(() => void) | null>(null);
+  const [positions, setPositions] = useState<number[]>(() =>
+    targetAnchors.map((pos) => pos * (width - lastLetterWidth)),
+  );
+  const [velocities, setVelocities] = useState<number[]>(() =>
+    letters.map(() => 0),
+  );
+  const animationRef = useRef<number | null>(null);
+  const loopRef = useRef<(() => void) | null>(null);
 
-    const updatePositions = useCallback(() => {
-        animationRef.current = requestAnimationFrame(() => {
-            const newValues = letters.map((_, index) => {
-                const params: StepperParams = {
-                    ...defaultConstants,
-                    ...constants,
-                    others: positions.filter((_, i) => i !== index),
-                    width: width - lastLetterWidth,
-                };
-                return stepper(
-                    positions[index],
-                    velocities[index],
-                    targetAnchors[index] * (width - lastLetterWidth),
-                    params
-                );
-            });
-
-            setPositions(newValues.map(val => val.newX));
-            setVelocities(newValues.map(val => val.newV));
-
-            if (!newValues.every(result => result.done)) {
-                loopRef.current?.();
-            }
-        });
-    }, [positions, velocities, width, constants, targetAnchors, letters]);
-
-    useEffect(() => {
-        loopRef.current = updatePositions;
-    }, [updatePositions]);
-
-    useEffect(() => {
-        if (animationRef.current !== null) {
-            cancelAnimationFrame(animationRef.current);
-        }
-        updatePositions();
-
-        return () => {
-            if (animationRef.current !== null) {
-                cancelAnimationFrame(animationRef.current);
-            }
+  const updatePositions = useCallback(() => {
+    animationRef.current = requestAnimationFrame(() => {
+      const newValues = letters.map((_, index) => {
+        const params: StepperParams = {
+          ...defaultConstants,
+          ...constants,
+          others: positions.filter((_, i) => i !== index),
+          width: width - lastLetterWidth,
         };
-    }, [width, direction, constants, updatePositions]);
-
-    const linkFontSize = link?.fontSize ?? 10;
-    const linkPadding = link ? linkFontSize + 20 : 0;
-
-    const isExternalUrl = (url: string) => /^(https?:)?\/\/|^mailto:/.test(url);
-
-    const linkEl = link ? (
-        <a
-            href={link.url}
-            className="kmd-logo-link"
-            {...(isExternalUrl(link.url)
-                ? { target: '_blank', rel: 'noopener noreferrer' }
-                : {}
-            )}
-            style={{ position: 'absolute', bottom: 0, left: 0, color, fontSize: linkFontSize, lineHeight: 1, textDecoration: 'none', whiteSpace: 'nowrap' }}
-        >
-            → {link.name}
-        </a>
-    ) : null;
-
-    // In vertical mode the outer div has the correct visual dimensions so that
-    // parents (borders, flex containers, etc.) size themselves correctly.
-    // An inner div is rotated 90° clockwise with translateX(containerHeight)
-    // so its visual top-left corner stays anchored at (0, 0) of the outer element.
-    if (isVertical) {
-        return (
-            <div
-                id={id}
-                style={{ position: 'relative', display: 'block', width: containerHeight, height: width + linkPadding, ...style }}
-            >
-                <a
-                    href={href}
-                    title="Til forsiden"
-                    style={{ position: 'absolute', top: 0, left: 0, width: containerHeight, height: width }}
-                >
-                    <div style={{
-                        position: 'absolute',
-                        width,
-                        height: containerHeight,
-                        transform: `translateX(${containerHeight}px) rotate(90deg)`,
-                        transformOrigin: '0 0',
-                    }}>
-                        {letters.map((Letter, index) => (
-                            <Letter
-                                key={index}
-                                fill={color}
-                                style={{ position: 'absolute', left: positions[index] }}
-                            />
-                        ))}
-                    </div>
-                </a>
-                {linkEl}
-            </div>
+        return stepper(
+          positions[index],
+          velocities[index],
+          targetAnchors[index] * (width - lastLetterWidth),
+          params,
         );
-    }
+      });
 
+      setPositions(newValues.map((val) => val.newX));
+      setVelocities(newValues.map((val) => val.newV));
+
+      if (!newValues.every((result) => result.done)) {
+        loopRef.current?.();
+      }
+    });
+  }, [positions, velocities, width, constants, targetAnchors, letters]);
+
+  useEffect(() => {
+    loopRef.current = updatePositions;
+  }, [updatePositions]);
+
+  useEffect(() => {
+    if (animationRef.current !== null) {
+      cancelAnimationFrame(animationRef.current);
+    }
+    updatePositions();
+
+    return () => {
+      if (animationRef.current !== null) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    };
+  }, [width, direction, constants, updatePositions]);
+
+  const linkFontSize = link?.fontSize ?? 10;
+  const linkPadding = link ? linkFontSize + 20 : 0;
+
+  const isExternalUrl = (url: string) => /^(https?:)?\/\/|^mailto:/.test(url);
+
+  const linkEl = link ? (
+    <a
+      href={link.url}
+      className="kmd-logo-link"
+      {...(isExternalUrl(link.url)
+        ? { target: "_blank", rel: "noopener noreferrer" }
+        : {})}
+      style={{
+        position: "absolute",
+        bottom: 0,
+        left: 0,
+        color,
+        fontSize: linkFontSize,
+        lineHeight: 1,
+        textDecoration: "none",
+        whiteSpace: "nowrap",
+      }}
+    >
+      → {link.name}
+    </a>
+  ) : null;
+
+  // In vertical mode the outer div has the correct visual dimensions so that
+  // parents (borders, flex containers, etc.) size themselves correctly.
+  // An inner div is rotated 90° clockwise with translateX(containerHeight)
+  // so its visual top-left corner stays anchored at (0, 0) of the outer element.
+  if (isVertical) {
     return (
-        <div
-            id={id}
-            style={{ position: 'relative', display: 'inline-block', height: containerHeight + linkPadding, width, ...style }}
+      <div
+        id={id}
+        style={{
+          position: "relative",
+          display: "block",
+          width: containerHeight,
+          height: width + linkPadding,
+          ...style,
+        }}
+      >
+        <a
+          href={href}
+          title="Til forsiden"
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: containerHeight,
+            height: width,
+          }}
         >
-            <a
-                href={href}
-                title="Til forsiden"
-                style={{ position: 'absolute', top: 0, left: 0, width, height: containerHeight }}
-            >
-                {letters.map((Letter, index) => (
-                    <Letter
-                        key={index}
-                        fill={color}
-                        style={{ position: 'absolute', left: positions[index] }}
-                    />
-                ))}
-            </a>
-            {linkEl}
-        </div>
+          <div
+            style={{
+              position: "absolute",
+              width,
+              height: containerHeight,
+              transform: `translateX(${containerHeight}px) rotate(90deg)`,
+              transformOrigin: "0 0",
+            }}
+          >
+            {letters.map((Letter, index) => (
+              <Letter
+                key={index}
+                fill={color}
+                style={{ position: "absolute", left: positions[index] }}
+              />
+            ))}
+          </div>
+        </a>
+        {linkEl}
+      </div>
     );
+  }
+
+  return (
+    <div
+      id={id}
+      style={{
+        position: "relative",
+        display: "inline-block",
+        height: containerHeight + linkPadding,
+        width,
+        ...style,
+      }}
+    >
+      <a
+        href={href}
+        title="Til forsiden"
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width,
+          height: containerHeight,
+        }}
+      >
+        {letters.map((Letter, index) => (
+          <Letter
+            key={index}
+            fill={color}
+            style={{ position: "absolute", left: positions[index] }}
+          />
+        ))}
+      </a>
+      {linkEl}
+    </div>
+  );
 };
 
 const KMDLogo = ({
-    id,
-    width = 420,
-    mode = KMD_LOGO_MODE.DEFAULT,
-    direction = LOGO_DIRECTION.HORIZONTAL,
-    color = LOGO_COLOR.WHITE,
-    constants,
-    style,
-    href,
-    link,
+  id,
+  width = 420,
+  mode = KMD_LOGO_MODE.DEFAULT,
+  direction = LOGO_DIRECTION.HORIZONTAL,
+  color = LOGO_COLOR.WHITE,
+  constants,
+  style,
+  href,
+  link,
 }: KMDLogoProps) => {
-    const letters: LetterComponent[] = [K, U, N, S, T, M, U, S, I, K, K, D, E, S, I, G, N];
+  const letters: LetterComponent[] = [
+    K,
+    U,
+    N,
+    S,
+    T,
+    M,
+    U,
+    S,
+    I,
+    K,
+    K,
+    D,
+    E,
+    S,
+    I,
+    G,
+    N,
+  ];
 
-    const anchors: Record<KMDLogoMode, number[]> = {
-        KUNST:   [0, 0.11859929846017954, 0.24794251789945726, 0.3661171554513721, 0.48661044156241245, 0.6066875599833533, 0.6559793671420038, 0.6990937736217631, 0.7392582023254431, 0.747728771908964, 0.7872618713956905, 0.826794970882417, 0.8696291011627215, 0.9075484891980421, 0.9477129179017221, 0.9561834874852431, 1],
-        MUSIKK:  [0, 0.03816833536967032, 0.0797943436298185, 0.11782601208682172, 0.15660388188698735, 0.19524781811273922, 0.33801827509956184, 0.46289629988000636, 0.5792299092805033, 0.6037643534425029, 0.7182693595515138, 0.8327743656605249, 0.8741297734335922, 0.9107401059988575, 0.9495179757990231, 0.9576961238530229, 1],
-        DESIGN:  [0, 0.041969349511149036, 0.08774070612138168, 0.12955977867209262, 0.17219936342679554, 0.21469167676026912, 0.2670211199240199, 0.3127924765342526, 0.35543206128895555, 0.3644246346015707, 0.4063939841127197, 0.4483633336238687, 0.5847847583095644, 0.705553334796029, 0.8334720890601378, 0.8604498089979833, 1],
-        DEFAULT: [0, 0.0663817569012973, 0.13877704305496794, 0.2049211110530094, 0.2723629604628279, 0.3395718747474556, 0.42233990463921206, 0.49473519079288264, 0.5621770402027011, 0.576400344173532, 0.6427821010748294, 0.7091638579761266, 0.7810885201013505, 0.8447606235055309, 0.9122024729153494, 0.9264257768861802, 1],
-    };
+  const anchors: Record<KMDLogoMode, number[]> = {
+    KUNST: [
+      0, 0.11859929846017954, 0.24794251789945726, 0.3661171554513721,
+      0.48661044156241245, 0.6066875599833533, 0.6559793671420038,
+      0.6990937736217631, 0.7392582023254431, 0.747728771908964,
+      0.7872618713956905, 0.826794970882417, 0.8696291011627215,
+      0.9075484891980421, 0.9477129179017221, 0.9561834874852431, 1,
+    ],
+    MUSIKK: [
+      0, 0.03816833536967032, 0.0797943436298185, 0.11782601208682172,
+      0.15660388188698735, 0.19524781811273922, 0.33801827509956184,
+      0.46289629988000636, 0.5792299092805033, 0.6037643534425029,
+      0.7182693595515138, 0.8327743656605249, 0.8741297734335922,
+      0.9107401059988575, 0.9495179757990231, 0.9576961238530229, 1,
+    ],
+    DESIGN: [
+      0, 0.041969349511149036, 0.08774070612138168, 0.12955977867209262,
+      0.17219936342679554, 0.21469167676026912, 0.2670211199240199,
+      0.3127924765342526, 0.35543206128895555, 0.3644246346015707,
+      0.4063939841127197, 0.4483633336238687, 0.5847847583095644,
+      0.705553334796029, 0.8334720890601378, 0.8604498089979833, 1,
+    ],
+    DEFAULT: [
+      0, 0.0663817569012973, 0.13877704305496794, 0.2049211110530094,
+      0.2723629604628279, 0.3395718747474556, 0.42233990463921206,
+      0.49473519079288264, 0.5621770402027011, 0.576400344173532,
+      0.6427821010748294, 0.7091638579761266, 0.7810885201013505,
+      0.8447606235055309, 0.9122024729153494, 0.9264257768861802, 1,
+    ],
+  };
 
-    return (
-        <BaseLogo
-            id={id}
-            letters={letters}
-            targetAnchors={anchors[mode] ?? anchors.DEFAULT}
-            width={width}
-            direction={direction}
-            color={color}
-            constants={constants}
-            style={style}
-            href={href}
-            link={link}
-        />
-    );
+  return (
+    <BaseLogo
+      id={id}
+      letters={letters}
+      targetAnchors={anchors[mode] ?? anchors.DEFAULT}
+      width={width}
+      direction={direction}
+      color={color}
+      constants={constants}
+      style={style}
+      href={href}
+      link={link}
+    />
+  );
 };
 
 const KMDExitLogo = ({
-    id,
-    width = 420,
-    mode = KMD_EXIT_LOGO_MODE.DEFAULT,
-    direction = LOGO_DIRECTION.HORIZONTAL,
-    color = LOGO_COLOR.WHITE,
-    block = true,
-    constants,
-    style,
-    href,
-    link,
+  id,
+  width = 420,
+  mode = KMD_EXIT_LOGO_MODE.DEFAULT,
+  direction = LOGO_DIRECTION.HORIZONTAL,
+  color = LOGO_COLOR.WHITE,
+  block = true,
+  constants,
+  style,
+  href,
+  link,
 }: KMDExitLogoProps) => {
-    const allLetters: LetterComponent[] = [K, M, D, E, X, I, T, Block];
-    const letters = block ? allLetters : allLetters.slice(0, 7);
+  const allLetters: LetterComponent[] = [K, M, D, E, X, I, T, Block];
+  const letters = block ? allLetters : allLetters.slice(0, 7);
 
-    const anchors: Record<KMDExitLogoMode, number[]> = {
-        K:       [0, 0.50, 0.58, 0.66, 0.74, 0.83, 0.85, 1.0],
-        M:       [0, 0.35, 0.65, 0.73, 0.81, 0.88, 0.90, 1.0],
-        D:       [0, 0.08, 0.16, 0.55, 0.68, 0.80, 0.82, 1.0],
-        EXIT:    [0, 0.09, 0.17, 0.38, 0.55, 0.72, 0.86, 1.0],
-        DEFAULT: [0, 0.1436, 0.3227, 0.4783, 0.6160, 0.7619, 0.7721, 0.9176],
-    };
+  const anchors: Record<KMDExitLogoMode, number[]> = {
+    K: [0, 0.35, 0.58, 0.66, 0.74, 0.83, 0.85, 1.0],
+    M: [0, 0.3, 0.65, 0.73, 0.81, 0.88, 0.9, 1.0],
+    D: [0, 0.1, 0.4, 0.65, 0.7, 0.82, 0.84, 1.0],
+    EXIT: [0, 0.09, 0.17, 0.4, 0.57, 0.81, 0.88, 1.0],
+    DEFAULT: [0, 0.1436, 0.3227, 0.4783, 0.616, 0.7619, 0.7721, 0.9176],
+  };
 
-    const targetAnchors = (anchors[mode] ?? anchors.DEFAULT).slice(0, letters.length);
+  const targetAnchors = (anchors[mode] ?? anchors.DEFAULT).slice(
+    0,
+    letters.length,
+  );
 
-    return (
-        <BaseLogo
-            id={id}
-            letters={letters}
-            targetAnchors={targetAnchors}
-            width={width}
-            direction={direction}
-            color={color}
-            constants={constants}
-            style={style}
-            href={href}
-            link={link}
-        />
-    );
+  return (
+    <BaseLogo
+      id={id}
+      letters={letters}
+      targetAnchors={targetAnchors}
+      width={width}
+      direction={direction}
+      color={color}
+      constants={constants}
+      style={style}
+      href={href}
+      link={link}
+    />
+  );
 };
 
 export { KMDLogo, KMDExitLogo };

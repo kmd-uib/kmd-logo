@@ -1,4 +1,4 @@
-import { type CSSProperties } from 'react';
+import { type CSSProperties } from "react";
 export declare const LOGO_DIRECTION: Readonly<{
     readonly HORIZONTAL: "horizontal";
     readonly VERTICAL: "vertical";
@@ -25,10 +25,10 @@ export declare const KMDLogoDirection: Readonly<{
     readonly HORIZONTAL: "horizontal";
     readonly VERTICAL: "vertical";
 }>;
-export type LogoDirection = typeof LOGO_DIRECTION[keyof typeof LOGO_DIRECTION];
-export type KMDLogoMode = typeof KMD_LOGO_MODE[keyof typeof KMD_LOGO_MODE];
-export type KMDExitLogoMode = typeof KMD_EXIT_LOGO_MODE[keyof typeof KMD_EXIT_LOGO_MODE];
-export type LogoColor = typeof LOGO_COLOR[keyof typeof LOGO_COLOR];
+export type LogoDirection = (typeof LOGO_DIRECTION)[keyof typeof LOGO_DIRECTION];
+export type KMDLogoMode = (typeof KMD_LOGO_MODE)[keyof typeof KMD_LOGO_MODE];
+export type KMDExitLogoMode = (typeof KMD_EXIT_LOGO_MODE)[keyof typeof KMD_EXIT_LOGO_MODE];
+export type LogoColor = (typeof LOGO_COLOR)[keyof typeof LOGO_COLOR];
 export interface SpringConstants {
     k?: number;
     b?: number;
@@ -46,11 +46,11 @@ export interface KMDLogoProps {
     id?: string;
     width?: number;
     /** @default 'DEFAULT' */
-    mode?: 'KUNST' | 'MUSIKK' | 'DESIGN' | 'DEFAULT';
+    mode?: "KUNST" | "MUSIKK" | "DESIGN" | "DEFAULT";
     /** @default 'horizontal' */
-    direction?: 'horizontal' | 'vertical';
+    direction?: "horizontal" | "vertical";
     /** @default 'white' */
-    color?: 'black' | 'white';
+    color?: "black" | "white";
     constants?: SpringConstants;
     style?: CSSProperties;
     href?: string;
@@ -60,11 +60,11 @@ export interface KMDExitLogoProps {
     id?: string;
     width?: number;
     /** @default 'DEFAULT' */
-    mode?: 'K' | 'M' | 'D' | 'EXIT' | 'DEFAULT';
+    mode?: "K" | "M" | "D" | "EXIT" | "DEFAULT";
     /** @default 'horizontal' */
-    direction?: 'horizontal' | 'vertical';
+    direction?: "horizontal" | "vertical";
     /** @default 'white' */
-    color?: 'black' | 'white';
+    color?: "black" | "white";
     /** @default true */
     block?: boolean;
     constants?: SpringConstants;
