@@ -55,6 +55,8 @@ export interface KMDLogoProps {
     style?: CSSProperties;
     href?: string;
     link?: LogoLink;
+    /** When true, letters repel the cursor like same-pole magnets (max 10 px). */
+    antimagnet?: boolean;
 }
 export interface KMDExitLogoProps {
     id?: string;
@@ -71,8 +73,10 @@ export interface KMDExitLogoProps {
     style?: CSSProperties;
     href?: string;
     link?: LogoLink;
+    /** When true, letters repel the cursor like same-pole magnets (max 10 px). */
+    antimagnet?: boolean;
 }
-declare const KMDLogo: ({ id, width, mode, direction, color, constants, style, href, link, }: KMDLogoProps) => import("react/jsx-runtime").JSX.Element;
-declare const KMDExitLogo: ({ id, width, mode, direction, color, block, constants, style, href, link, }: KMDExitLogoProps) => import("react/jsx-runtime").JSX.Element;
+declare const KMDLogo: ({ id, width, mode, direction, color, constants, style, href, link, antimagnet, }: KMDLogoProps) => import("react/jsx-runtime").JSX.Element;
+declare const KMDExitLogo: ({ id, width, mode, direction, color, block, constants, style, href, link, antimagnet, }: KMDExitLogoProps) => import("react/jsx-runtime").JSX.Element;
 export { KMDLogo, KMDExitLogo };
 export default KMDLogo;

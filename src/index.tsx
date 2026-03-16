@@ -54,6 +54,7 @@ const App = () => {
     const [linkName, setLinkName] = useState('kmd.uib.no');
     const [linkUrl, setLinkUrl] = useState('https://kmd.uib.no');
     const [constants, setConstants] = useState<SpringConstants>(initialConstants);
+    const [antimagnet, setAntimagnet] = useState(false);
 
     const updateConstant = useCallback((id: keyof SpringConstants, value: string) => {
         setConstants(prev => ({ ...prev, [id]: parseInt(value) }));
@@ -123,6 +124,13 @@ const App = () => {
                     </label>
                 </div>
             )}
+
+            <div style={{ marginBottom: '10px' }}>
+                <label>
+                    <input type="checkbox" checked={antimagnet} onChange={e => setAntimagnet(e.target.checked)} style={{ marginRight: 6 }} />
+                    Antimagnet (repel letters from cursor)
+                </label>
+            </div>
 
             <div style={{ marginBottom: '10px' }}>
                 <label>
@@ -211,9 +219,9 @@ const App = () => {
             <div style={{ display: 'flex', alignItems: 'flex-start', gap: '24px' }}>
                 <div style={{ border: '1px solid red', display: 'inline-block', flexShrink: 0, backgroundColor: color === 'white' ? 'black' : 'white' }}>
                     {logoType === 'KMD' ? (
-                        <KMDLogo width={width} mode={mode as KMDLogoMode} direction={direction} color={color} link={link} constants={constants} />
+                        <KMDLogo width={width} mode={mode as KMDLogoMode} direction={direction} color={color} link={link} constants={constants} antimagnet={antimagnet} />
                     ) : (
-                        <KMDExitLogo width={width} mode={mode as KMDExitLogoMode} direction={direction} color={color} block={block} link={link} constants={constants} />
+                        <KMDExitLogo width={width} mode={mode as KMDExitLogoMode} direction={direction} color={color} block={block} link={link} constants={constants} antimagnet={antimagnet} />
                     )}
                 </div>
                 <div style={{ fontSize: '12px', color: '#666' }}>
