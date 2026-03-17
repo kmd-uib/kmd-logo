@@ -1,31 +1,31 @@
-import je, { useMemo as se, useRef as A, useState as ue, useEffect as W, useCallback as ne } from "react";
-var q = { exports: {} }, C = {};
-var fe;
-function Oe() {
-  if (fe) return C;
-  fe = 1;
+import be, { useMemo as oe, useRef as A, useState as ie, useCallback as re, useLayoutEffect as je, useEffect as Oe } from "react";
+var W = { exports: {} }, C = {};
+var ue;
+function Me() {
+  if (ue) return C;
+  ue = 1;
   var t = /* @__PURE__ */ Symbol.for("react.transitional.element"), c = /* @__PURE__ */ Symbol.for("react.fragment");
-  function o(s, i, a) {
+  function o(a, i, s) {
     var h = null;
-    if (a !== void 0 && (h = "" + a), i.key !== void 0 && (h = "" + i.key), "key" in i) {
-      a = {};
-      for (var m in i)
-        m !== "key" && (a[m] = i[m]);
-    } else a = i;
-    return i = a.ref, {
+    if (s !== void 0 && (h = "" + s), i.key !== void 0 && (h = "" + i.key), "key" in i) {
+      s = {};
+      for (var d in i)
+        d !== "key" && (s[d] = i[d]);
+    } else s = i;
+    return i = s.ref, {
       $$typeof: t,
-      type: s,
+      type: a,
       key: h,
       ref: i !== void 0 ? i : null,
-      props: a
+      props: s
     };
   }
   return C.Fragment = c, C.jsx = o, C.jsxs = o, C;
 }
 var V = {};
-var pe;
-function Me() {
-  return pe || (pe = 1, process.env.NODE_ENV !== "production" && (function() {
+var fe;
+function Ae() {
+  return fe || (fe = 1, process.env.NODE_ENV !== "production" && (function() {
     function t(e) {
       if (e == null) return null;
       if (typeof e == "function")
@@ -34,7 +34,7 @@ function Me() {
       switch (e) {
         case v:
           return "Fragment";
-        case R:
+        case b:
           return "Profiler";
         case O:
           return "StrictMode";
@@ -60,7 +60,7 @@ function Me() {
             return e = e.displayName, e || (e = r.displayName || r.name || "", e = e !== "" ? "ForwardRef(" + e + ")" : "ForwardRef"), e;
           case $:
             return r = e.displayName || null, r !== null ? r : t(e.type) || "Memo";
-          case k:
+          case L:
             r = e._payload, e = e._init;
             try {
               return t(e(r));
@@ -89,9 +89,9 @@ function Me() {
         ), c(e);
       }
     }
-    function s(e) {
+    function a(e) {
       if (e === v) return "<>";
-      if (typeof e == "object" && e !== null && e.$$typeof === k)
+      if (typeof e == "object" && e !== null && e.$$typeof === L)
         return "<...>";
       try {
         var r = t(e);
@@ -101,10 +101,10 @@ function Me() {
       }
     }
     function i() {
-      var e = L.A;
+      var e = k.A;
       return e === null ? null : e.getOwner();
     }
-    function a() {
+    function s() {
       return Error("react-stack-top-frame");
     }
     function h(e) {
@@ -114,9 +114,9 @@ function Me() {
       }
       return e.key !== void 0;
     }
-    function m(e, r) {
+    function d(e, r) {
       function l() {
-        E || (E = !0, console.error(
+        m || (m = !0, console.error(
           "%s: `key` is not a prop. Trying to access it will result in `undefined` being returned. If you need to access the same value within the child component, you should pass it as a different prop. (https://react.dev/link/special-props)",
           r
         ));
@@ -126,13 +126,13 @@ function Me() {
         configurable: !0
       });
     }
-    function g() {
+    function T() {
       var e = t(this.type);
-      return b[e] || (b[e] = !0, console.error(
+      return g[e] || (g[e] = !0, console.error(
         "Accessing element.ref was removed in React 19. ref is now a regular prop. It will be removed from the JSX Element type in a future release."
       )), e = this.props.ref, e !== void 0 ? e : null;
     }
-    function x(e, r, l, f, N, te) {
+    function x(e, r, l, f, N, ee) {
       var p = l.ref;
       return e = {
         $$typeof: j,
@@ -142,7 +142,7 @@ function Me() {
         _owner: f
       }, (p !== void 0 ? p : null) !== null ? Object.defineProperty(e, "ref", {
         enumerable: !1,
-        get: g
+        get: T
       }) : Object.defineProperty(e, "ref", { enumerable: !1, value: null }), e._store = {}, Object.defineProperty(e._store, "validated", {
         configurable: !1,
         enumerable: !1,
@@ -162,26 +162,26 @@ function Me() {
         configurable: !1,
         enumerable: !1,
         writable: !0,
-        value: te
+        value: ee
       }), Object.freeze && (Object.freeze(e.props), Object.freeze(e)), e;
     }
-    function d(e, r, l, f, N, te) {
+    function E(e, r, l, f, N, ee) {
       var p = r.children;
       if (p !== void 0)
         if (f)
           if (Z(p)) {
             for (f = 0; f < p.length; f++)
-              T(p[f]);
+              _(p[f]);
             Object.freeze && Object.freeze(p);
           } else
             console.error(
               "React.jsx: Static children should always be an array. You are likely explicitly calling React.jsxs or React.jsxDEV. Use the Babel transform instead."
             );
-        else T(p);
+        else _(p);
       if (X.call(r, "key")) {
         p = t(e);
-        var P = Object.keys(r).filter(function(be) {
-          return be !== "key";
+        var P = Object.keys(r).filter(function(Re) {
+          return Re !== "key";
         });
         f = 0 < P.length ? "{key: someKey, " + P.join(": ..., ") + ": ...}" : "{key: someKey}", y[p + f] || (P = 0 < P.length ? "{" + P.join(": ..., ") + ": ...}" : "{}", console.error(
           `A props object containing a "key" prop is being spread into JSX:
@@ -198,10 +198,10 @@ React keys must be passed directly to JSX without using spread:
       }
       if (p = null, l !== void 0 && (o(l), p = "" + l), h(r) && (o(r.key), p = "" + r.key), "key" in r) {
         l = {};
-        for (var re in r)
-          re !== "key" && (l[re] = r[re]);
+        for (var te in r)
+          te !== "key" && (l[te] = r[te]);
       } else l = r;
-      return p && m(
+      return p && d(
         l,
         typeof e == "function" ? e.displayName || e.name || "Unknown" : e
       ), x(
@@ -210,16 +210,16 @@ React keys must be passed directly to JSX without using spread:
         l,
         i(),
         N,
-        te
+        ee
       );
     }
-    function T(e) {
-      _(e) ? e._store && (e._store.validated = 1) : typeof e == "object" && e !== null && e.$$typeof === k && (e._payload.status === "fulfilled" ? _(e._payload.value) && e._payload.value._store && (e._payload.value._store.validated = 1) : e._store && (e._store.validated = 1));
-    }
     function _(e) {
+      R(e) ? e._store && (e._store.validated = 1) : typeof e == "object" && e !== null && e.$$typeof === L && (e._payload.status === "fulfilled" ? R(e._payload.value) && e._payload.value._store && (e._payload.value._store.validated = 1) : e._store && (e._store.validated = 1));
+    }
+    function R(e) {
       return typeof e == "object" && e !== null && e.$$typeof === j;
     }
-    var w = je, j = /* @__PURE__ */ Symbol.for("react.transitional.element"), D = /* @__PURE__ */ Symbol.for("react.portal"), v = /* @__PURE__ */ Symbol.for("react.fragment"), O = /* @__PURE__ */ Symbol.for("react.strict_mode"), R = /* @__PURE__ */ Symbol.for("react.profiler"), M = /* @__PURE__ */ Symbol.for("react.consumer"), H = /* @__PURE__ */ Symbol.for("react.context"), I = /* @__PURE__ */ Symbol.for("react.forward_ref"), U = /* @__PURE__ */ Symbol.for("react.suspense"), Y = /* @__PURE__ */ Symbol.for("react.suspense_list"), $ = /* @__PURE__ */ Symbol.for("react.memo"), k = /* @__PURE__ */ Symbol.for("react.lazy"), K = /* @__PURE__ */ Symbol.for("react.activity"), B = /* @__PURE__ */ Symbol.for("react.client.reference"), L = w.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, X = Object.prototype.hasOwnProperty, Z = Array.isArray, u = console.createTask ? console.createTask : function() {
+    var w = be, j = /* @__PURE__ */ Symbol.for("react.transitional.element"), D = /* @__PURE__ */ Symbol.for("react.portal"), v = /* @__PURE__ */ Symbol.for("react.fragment"), O = /* @__PURE__ */ Symbol.for("react.strict_mode"), b = /* @__PURE__ */ Symbol.for("react.profiler"), M = /* @__PURE__ */ Symbol.for("react.consumer"), H = /* @__PURE__ */ Symbol.for("react.context"), I = /* @__PURE__ */ Symbol.for("react.forward_ref"), U = /* @__PURE__ */ Symbol.for("react.suspense"), Y = /* @__PURE__ */ Symbol.for("react.suspense_list"), $ = /* @__PURE__ */ Symbol.for("react.memo"), L = /* @__PURE__ */ Symbol.for("react.lazy"), K = /* @__PURE__ */ Symbol.for("react.activity"), B = /* @__PURE__ */ Symbol.for("react.client.reference"), k = w.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, X = Object.prototype.hasOwnProperty, Z = Array.isArray, u = console.createTask ? console.createTask : function() {
       return null;
     };
     w = {
@@ -227,117 +227,113 @@ React keys must be passed directly to JSX without using spread:
         return e();
       }
     };
-    var E, b = {}, G = w.react_stack_bottom_frame.bind(
+    var m, g = {}, G = w.react_stack_bottom_frame.bind(
       w,
-      a
-    )(), z = u(s(a)), y = {};
+      s
+    )(), z = u(a(s)), y = {};
     V.Fragment = v, V.jsx = function(e, r, l) {
-      var f = 1e4 > L.recentlyCreatedOwnerStacks++;
-      return d(
+      var f = 1e4 > k.recentlyCreatedOwnerStacks++;
+      return E(
         e,
         r,
         l,
         !1,
         f ? Error("react-stack-top-frame") : G,
-        f ? u(s(e)) : z
+        f ? u(a(e)) : z
       );
     }, V.jsxs = function(e, r, l) {
-      var f = 1e4 > L.recentlyCreatedOwnerStacks++;
-      return d(
+      var f = 1e4 > k.recentlyCreatedOwnerStacks++;
+      return E(
         e,
         r,
         l,
         !0,
         f ? Error("react-stack-top-frame") : G,
-        f ? u(s(e)) : z
+        f ? u(a(e)) : z
       );
     };
   })()), V;
 }
-var he;
-function Ae() {
-  return he || (he = 1, process.env.NODE_ENV === "production" ? q.exports = Oe() : q.exports = Me()), q.exports;
+var pe;
+function Se() {
+  return pe || (pe = 1, process.env.NODE_ENV === "production" ? W.exports = Me() : W.exports = Ae()), W.exports;
 }
-var n = Ae();
-const me = 1 / 60, de = 2, ve = (t) => t.reduce((c, o) => c + o, 0), Se = (t, c, o, { k: s, b: i, others: a, ki: h, krandom: m, fcap: g }) => {
-  const x = -s * (t - o), d = -i * c, T = ve(a.map((M) => Math.sign(t - M) * h / Math.max(Math.pow(t - M, 2), 1e-11))), _ = ve(a.map((M) => Math.abs(t - M))), w = (Math.random() - 0.5) * m / Math.max(Math.pow(_, 2), 1e-13), j = x + d + T + w, v = Math.sign(j) * Math.min(Math.abs(j), g), O = c + v * me, R = t + O * me;
-  return Math.abs(O) < de && Math.abs(R - o) < de ? { newX: o, newV: 0, done: !0 } : { newX: R, newV: O, done: !1 };
-}, F = (t) => /* @__PURE__ */ n.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 139.64 193.46", height: "79px", ...t, children: /* @__PURE__ */ n.jsx("path", { d: "M9.92,118.31,118.81,0H132.7L51.34,87.06l88.3,106.4H126.49L44.89,94l-35,37.46v62H0V0H9.92Z" }) }), Ee = (t) => /* @__PURE__ */ n.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 152.29 195.94", height: "79px", ...t, children: /* @__PURE__ */ n.jsx("path", { d: "M0,129.23V0H10.17V131c0,33.49,15.13,55.81,66,55.81s66-22.32,66-55.81V0h10.17V129.23c0,40.68-18.85,66.72-76.15,66.72S0,169.9,0,129.23Z" }) }), xe = (t) => /* @__PURE__ */ n.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 139.14 193.46", height: "79px", ...t, children: /* @__PURE__ */ n.jsx("path", { d: "M38.69,58.53,8.93,11.9l.74,67.47V193.46H0V0H12.15l88.3,134.93,29.76,46.63-.74-67.46V0h9.67V193.46H127Z" }) }), oe = (t) => /* @__PURE__ */ n.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 141.87 198.43", height: "79px", ...t, children: /* @__PURE__ */ n.jsx("path", { d: "M0,152l10.17-1.49c3.47,25,16.87,38.94,60.77,38.94,27,0,60.77-9.92,60.77-45.14,0-29.52-11.16-40.43-58.53-45.64C32,94.25,6.7,87.55,6.7,51.34,6.7,14.14,37.95,0,71.18,0c47.87,0,65.73,17.86,69.2,44.65l-10.17,1.49c-3.47-24.31-19.84-37.2-59-37.2-18.85,0-54.07,5.7-54.07,42.41,0,25.3,11.66,33.49,56.8,38.2,47.13,5,68,15.38,68,54.82,0,38.44-34,54.07-70.94,54.07C20.09,198.43,3.72,179.33,0,152Z" }) }), ae = (t) => /* @__PURE__ */ n.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 141.38 193.46", height: "79px", ...t, children: /* @__PURE__ */ n.jsx("path", { d: "M75.65,193.46H65.73V8.93H0V0H141.38V8.93H75.65Z" }) }), ce = (t) => /* @__PURE__ */ n.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 174.11 193.45", height: "79px", ...t, children: /* @__PURE__ */ n.jsx("path", { d: "M26,58.78,8.93,17.11l.75,62.25V193.45H0V0H11.91l57,138.15L87.05,183l18.1-44.89L162.2,0h11.9V193.45h-9.67V79.37l.75-62.25L148.07,58.78,92.51,193.45H81.59Z" }) }), Q = (t) => /* @__PURE__ */ n.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 9.92 193.45", height: "79px", ...t, children: /* @__PURE__ */ n.jsx("path", { d: "M9.92,193.45H0V0H9.92Z" }) }), le = (t) => /* @__PURE__ */ n.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 151.3 193.46", height: "79px", ...t, children: /* @__PURE__ */ n.jsx("path", { d: "M63.74,193.46H0V0H63.74C120,0,151.3,21.33,151.3,96.73S120,193.46,63.74,193.46Zm2.73-8.93c52.34,0,74.41-20.84,74.41-87.81S118.81,8.93,66.47,8.93H9.92V184.54Z" }) }), ie = (t) => /* @__PURE__ */ n.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 133.94 193.46", height: "79px", ...t, children: /* @__PURE__ */ n.jsx("path", { d: "M129,0V8.93H9.92V89.79H119.05v8.93H9.92v85.82h124v8.93H0V0Z" }) }), ke = (t) => /* @__PURE__ */ n.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 154.77 198.43", height: "79px", ...t, children: /* @__PURE__ */ n.jsx("path", { d: "M144.85,165V101.2H95.24V92.27h59.53v76.28c-17.35,21.07-40.16,29.88-72.92,29.88C24.8,198.43,0,160,0,99.21S24.8,0,81.85,0c46.88,0,66.72,21.33,72.43,50.6l-10.42,1.49c-5-27-23.56-43.66-62-43.16C31.5,9.67,10.42,42.66,10.42,99.21S31.49,189.5,81.85,189.5C113.1,189.5,131.72,180.06,144.85,165Z" }) }), we = (t) => /* @__PURE__ */ n.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 141.87 193.46", height: "79px", ...t, children: /* @__PURE__ */ n.jsx("path", { d: "M56.8,96.73,4.96,0H18.11l44.89,82.32L107.89,0h13.15L69.2,96.73l51.84,96.73H107.89L62.75,111.14,17.61,193.46H4.46Z" }) }), Le = (t) => /* @__PURE__ */ n.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 80 80", height: "79px", ...t, children: /* @__PURE__ */ n.jsx("path", { d: "M40,0V40H80V0Z" }) }), ee = Object.freeze({
+var n = Se();
+const he = 1 / 60, de = 2, me = (t) => t.reduce((c, o) => c + o, 0), Le = (t, c, o, { k: a, b: i, others: s, ki: h, krandom: d, fcap: T }) => {
+  const x = -a * (t - o), E = -i * c, _ = me(s.map((M) => Math.sign(t - M) * h / Math.max(Math.pow(t - M, 2), 1e-11))), R = me(s.map((M) => Math.abs(t - M))), w = (Math.random() - 0.5) * d / Math.max(Math.pow(R, 2), 1e-13), j = x + E + _ + w, v = Math.sign(j) * Math.min(Math.abs(j), T), O = c + v * he, b = t + O * he;
+  return Math.abs(O) < de && Math.abs(b - o) < de ? { newX: o, newV: 0, done: !0 } : { newX: b, newV: O, done: !1 };
+}, F = (t) => /* @__PURE__ */ n.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 139.64 193.46", height: "79px", ...t, children: /* @__PURE__ */ n.jsx("path", { d: "M9.92,118.31,118.81,0H132.7L51.34,87.06l88.3,106.4H126.49L44.89,94l-35,37.46v62H0V0H9.92Z" }) }), ve = (t) => /* @__PURE__ */ n.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 152.29 195.94", height: "79px", ...t, children: /* @__PURE__ */ n.jsx("path", { d: "M0,129.23V0H10.17V131c0,33.49,15.13,55.81,66,55.81s66-22.32,66-55.81V0h10.17V129.23c0,40.68-18.85,66.72-76.15,66.72S0,169.9,0,129.23Z" }) }), Ee = (t) => /* @__PURE__ */ n.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 139.14 193.46", height: "79px", ...t, children: /* @__PURE__ */ n.jsx("path", { d: "M38.69,58.53,8.93,11.9l.74,67.47V193.46H0V0H12.15l88.3,134.93,29.76,46.63-.74-67.46V0h9.67V193.46H127Z" }) }), ne = (t) => /* @__PURE__ */ n.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 141.87 198.43", height: "79px", ...t, children: /* @__PURE__ */ n.jsx("path", { d: "M0,152l10.17-1.49c3.47,25,16.87,38.94,60.77,38.94,27,0,60.77-9.92,60.77-45.14,0-29.52-11.16-40.43-58.53-45.64C32,94.25,6.7,87.55,6.7,51.34,6.7,14.14,37.95,0,71.18,0c47.87,0,65.73,17.86,69.2,44.65l-10.17,1.49c-3.47-24.31-19.84-37.2-59-37.2-18.85,0-54.07,5.7-54.07,42.41,0,25.3,11.66,33.49,56.8,38.2,47.13,5,68,15.38,68,54.82,0,38.44-34,54.07-70.94,54.07C20.09,198.43,3.72,179.33,0,152Z" }) }), se = (t) => /* @__PURE__ */ n.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 141.38 193.46", height: "79px", ...t, children: /* @__PURE__ */ n.jsx("path", { d: "M75.65,193.46H65.73V8.93H0V0H141.38V8.93H75.65Z" }) }), ae = (t) => /* @__PURE__ */ n.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 174.11 193.45", height: "79px", ...t, children: /* @__PURE__ */ n.jsx("path", { d: "M26,58.78,8.93,17.11l.75,62.25V193.45H0V0H11.91l57,138.15L87.05,183l18.1-44.89L162.2,0h11.9V193.45h-9.67V79.37l.75-62.25L148.07,58.78,92.51,193.45H81.59Z" }) }), J = (t) => /* @__PURE__ */ n.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 9.92 193.45", height: "79px", ...t, children: /* @__PURE__ */ n.jsx("path", { d: "M9.92,193.45H0V0H9.92Z" }) }), ce = (t) => /* @__PURE__ */ n.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 151.3 193.46", height: "79px", ...t, children: /* @__PURE__ */ n.jsx("path", { d: "M63.74,193.46H0V0H63.74C120,0,151.3,21.33,151.3,96.73S120,193.46,63.74,193.46Zm2.73-8.93c52.34,0,74.41-20.84,74.41-87.81S118.81,8.93,66.47,8.93H9.92V184.54Z" }) }), le = (t) => /* @__PURE__ */ n.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 133.94 193.46", height: "79px", ...t, children: /* @__PURE__ */ n.jsx("path", { d: "M129,0V8.93H9.92V89.79H119.05v8.93H9.92v85.82h124v8.93H0V0Z" }) }), ke = (t) => /* @__PURE__ */ n.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 154.77 198.43", height: "79px", ...t, children: /* @__PURE__ */ n.jsx("path", { d: "M144.85,165V101.2H95.24V92.27h59.53v76.28c-17.35,21.07-40.16,29.88-72.92,29.88C24.8,198.43,0,160,0,99.21S24.8,0,81.85,0c46.88,0,66.72,21.33,72.43,50.6l-10.42,1.49c-5-27-23.56-43.66-62-43.16C31.5,9.67,10.42,42.66,10.42,99.21S31.49,189.5,81.85,189.5C113.1,189.5,131.72,180.06,144.85,165Z" }) }), xe = (t) => /* @__PURE__ */ n.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 141.87 193.46", height: "79px", ...t, children: /* @__PURE__ */ n.jsx("path", { d: "M56.8,96.73,4.96,0H18.11l44.89,82.32L107.89,0h13.15L69.2,96.73l51.84,96.73H107.89L62.75,111.14,17.61,193.46H4.46Z" }) }), ye = (t) => /* @__PURE__ */ n.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 80 80", height: "79px", ...t, children: /* @__PURE__ */ n.jsx("path", { d: "M40,0V40H80V0Z" }) }), Ne = typeof window < "u" ? je : Oe, Q = Object.freeze({
   HORIZONTAL: "horizontal",
   VERTICAL: "vertical"
-}), ye = Object.freeze({
+}), Pe = Object.freeze({
   KUNST: "KUNST",
   MUSIKK: "MUSIKK",
   DESIGN: "DESIGN",
   DEFAULT: "DEFAULT"
-}), Ne = Object.freeze({
+}), De = Object.freeze({
   K: "K",
   M: "M",
   D: "D",
   EXIT: "EXIT",
   DEFAULT: "DEFAULT"
-}), _e = Object.freeze({
+}), Te = Object.freeze({
   BLACK: "black",
   WHITE: "white"
-}), He = ee, Pe = {
+}), Ue = Q, Ce = {
   k: 234,
   b: 18,
   ki: 389,
   krandom: 1992700730,
   fcap: 15036
-}, J = 57, S = 81, De = 10, Ce = 80, ge = (t, c, o) => {
-  const s = t + 30, i = S / 2, a = c - s, h = o - i, m = Math.sqrt(a * a + h * h);
-  if (m === 0) return 0;
-  const g = De * Math.exp(-m / Ce);
-  return -(a / m) * g;
-}, Re = ({
+}, q = 57, S = 81, Ve = 10, Fe = 80, we = (t, c, o) => {
+  const a = t + 30, i = S / 2, s = c - a, h = o - i, d = Math.sqrt(s * s + h * h);
+  if (d === 0) return 0;
+  const T = Ve * Math.exp(-d / Fe);
+  return -(s / d) * T;
+}, _e = ({
   id: t,
   letters: c,
   targetAnchors: o,
-  width: s,
+  width: a,
   direction: i,
-  color: a,
+  color: s,
   constants: h,
-  style: m,
-  href: g,
+  style: d,
+  href: T,
   link: x,
-  antimagnet: d
+  antimagnet: E
 }) => {
-  const T = i === ee.VERTICAL, _ = A(o.map((u) => u * (s - J))), w = A(c.map(() => 0)), [j, D] = ue(
-    () => o.map((u) => u * (s - J))
-  ), v = A(null), O = A(null), [R, M] = ue(null), H = A(s), I = A(h), U = A(o), Y = A(c.length);
-  W(() => {
-    H.current = s;
-  }, [s]), W(() => {
-    I.current = h;
-  }, [h]), W(() => {
-    U.current = o;
-  }, [o]);
-  const $ = ne(() => {
+  const _ = i === Q.VERTICAL, R = A(o.map((u) => u * (a - q))), w = A(c.map(() => 0)), [j, D] = ie(
+    () => o.map((u) => u * (a - q))
+  ), v = A(null), O = A(null), [b, M] = ie(null), H = A(a), I = A(h), U = A(o), Y = A(c.length), $ = re(() => {
     v.current !== null && (cancelAnimationFrame(v.current), v.current = null);
     const u = () => {
-      const E = H.current, b = _.current, G = w.current, z = U.current, y = b.map((e, r) => {
+      const m = H.current, g = R.current, G = w.current, z = U.current, y = g.map((e, r) => {
         const l = {
-          ...Pe,
+          ...Ce,
           ...I.current,
-          others: b.filter((f, N) => N !== r)
+          others: g.filter((f, N) => N !== r)
         };
-        return Se(e, G[r], z[r] * (E - J), l);
+        return Le(e, G[r], z[r] * (m - q), l);
       });
-      _.current = y.map((e) => e.newX), w.current = y.map((e) => e.newV), D([..._.current]), y.every((e) => e.done) ? v.current = null : v.current = requestAnimationFrame(u);
+      R.current = y.map((e) => e.newX), w.current = y.map((e) => e.newV), D([...R.current]), y.every((e) => e.done) ? v.current = null : v.current = requestAnimationFrame(u);
     };
     v.current = requestAnimationFrame(u);
   }, []);
-  W(() => (c.length !== Y.current && (Y.current = c.length, _.current = o.map((u) => u * (s - J)), w.current = c.map(() => 0), D([..._.current])), $(), () => {
-    v.current !== null && (cancelAnimationFrame(v.current), v.current = null);
-  }), [s, i, o, c, $]);
-  const k = ne((u) => {
+  Ne(() => {
+    H.current = a, I.current = h, U.current = o;
+    const u = o.map((g) => g * (a - q)), m = c.length !== Y.current;
+    return m && (Y.current = c.length), R.current = u, w.current = c.map(() => 0), D([...u]), (v.current === null || m) && $(), () => {
+      v.current !== null && (cancelAnimationFrame(v.current), v.current = null);
+    };
+  }, [a, i, o, c, h, $]);
+  const L = re((u) => {
     if (!O.current) return;
-    const E = O.current.getBoundingClientRect();
-    M({ x: u.clientX - E.left, y: u.clientY - E.top });
-  }, []), K = ne(() => {
+    const m = O.current.getBoundingClientRect();
+    M({ x: u.clientX - m.left, y: u.clientY - m.top });
+  }, []), K = re(() => {
     M(null);
-  }, []), B = x?.fontSize ?? 10, L = x ? B + 20 : 0, X = (u) => /^(https?:)?\/\/|^mailto:/.test(u), Z = x ? /* @__PURE__ */ n.jsxs(
+  }, []), B = x?.fontSize ?? 10, k = x ? B + 20 : 0, X = (u) => /^(https?:)?\/\/|^mailto:/.test(u), Z = x ? /* @__PURE__ */ n.jsxs(
     "a",
     {
       href: x.url,
@@ -347,7 +343,7 @@ const me = 1 / 60, de = 2, ve = (t) => t.reduce((c, o) => c + o, 0), Se = (t, c,
         position: "absolute",
         bottom: 0,
         left: 0,
-        color: a,
+        color: s,
         fontSize: B,
         lineHeight: 1,
         textDecoration: "none",
@@ -359,56 +355,56 @@ const me = 1 / 60, de = 2, ve = (t) => t.reduce((c, o) => c + o, 0), Se = (t, c,
       ]
     }
   ) : null;
-  return T ? /* @__PURE__ */ n.jsxs(
+  return _ ? /* @__PURE__ */ n.jsxs(
     "div",
     {
       id: t,
       ref: O,
-      onMouseMove: d ? k : void 0,
-      onMouseLeave: d ? K : void 0,
+      onMouseMove: E ? L : void 0,
+      onMouseLeave: E ? K : void 0,
       style: {
         position: "relative",
         display: "block",
         width: S,
-        height: s + L,
-        ...m
+        height: a + k,
+        ...d
       },
       children: [
         /* @__PURE__ */ n.jsx(
           "a",
           {
-            href: g,
+            href: T,
             title: "Til forsiden",
             style: {
               position: "absolute",
               top: 0,
               left: 0,
               width: S,
-              height: s
+              height: a
             },
             children: /* @__PURE__ */ n.jsx(
               "div",
               {
                 style: {
                   position: "absolute",
-                  width: s,
+                  width: a,
                   height: S,
                   transform: `translateX(${S}px) rotate(90deg)`,
                   transformOrigin: "0 0"
                 },
-                children: c.map((u, E) => {
-                  const b = d && R ? ge(j[E], R.y, R.x) : 0;
+                children: c.map((u, m) => {
+                  const g = E && b ? we(j[m], b.y, b.x) : 0;
                   return /* @__PURE__ */ n.jsx(
                     u,
                     {
-                      fill: a,
+                      fill: s,
                       style: {
                         position: "absolute",
-                        left: j[E],
-                        transform: b !== 0 ? `translateX(${b}px)` : void 0
+                        left: j[m],
+                        transform: g !== 0 ? `translateX(${g}px)` : void 0
                       }
                     },
-                    E
+                    m
                   );
                 })
               }
@@ -423,41 +419,41 @@ const me = 1 / 60, de = 2, ve = (t) => t.reduce((c, o) => c + o, 0), Se = (t, c,
     {
       id: t,
       ref: O,
-      onMouseMove: d ? k : void 0,
-      onMouseLeave: d ? K : void 0,
+      onMouseMove: E ? L : void 0,
+      onMouseLeave: E ? K : void 0,
       style: {
         position: "relative",
         display: "inline-block",
-        height: S + L,
-        width: s,
-        ...m
+        height: S + k,
+        width: a,
+        ...d
       },
       children: [
         /* @__PURE__ */ n.jsx(
           "a",
           {
-            href: g,
+            href: T,
             title: "Til forsiden",
             style: {
               position: "absolute",
               top: 0,
               left: 0,
-              width: s,
+              width: a,
               height: S
             },
-            children: c.map((u, E) => {
-              const b = d && R ? ge(j[E], R.x, R.y) : 0;
+            children: c.map((u, m) => {
+              const g = E && b ? we(j[m], b.x, b.y) : 0;
               return /* @__PURE__ */ n.jsx(
                 u,
                 {
-                  fill: a,
+                  fill: s,
                   style: {
                     position: "absolute",
-                    left: j[E],
-                    transform: b !== 0 ? `translateX(${b}px)` : void 0
+                    left: j[m],
+                    transform: g !== 0 ? `translateX(${g}px)` : void 0
                   }
                 },
-                E
+                m
               );
             })
           }
@@ -466,7 +462,7 @@ const me = 1 / 60, de = 2, ve = (t) => t.reduce((c, o) => c + o, 0), Se = (t, c,
       ]
     }
   );
-}, Ve = [F, Ee, xe, oe, ae, ce, Ee, oe, Q, F, F, le, ie, oe, Q, ke, xe], Te = {
+}, He = [F, ve, Ee, ne, se, ae, ve, ne, J, F, F, ce, le, ne, J, ke, Ee], ge = {
   KUNST: [
     0,
     0.11859929846017954,
@@ -543,55 +539,55 @@ const me = 1 / 60, de = 2, ve = (t) => t.reduce((c, o) => c + o, 0), Se = (t, c,
     0.9264257768861802,
     1
   ]
-}, Ie = ({
+}, Ye = ({
   id: t,
   width: c = 420,
-  mode: o = ye.DEFAULT,
-  direction: s = ee.HORIZONTAL,
-  color: i = _e.WHITE,
-  constants: a,
+  mode: o = Pe.DEFAULT,
+  direction: a = Q.HORIZONTAL,
+  color: i = Te.WHITE,
+  constants: s,
   style: h,
-  href: m,
-  link: g,
+  href: d,
+  link: T,
   antimagnet: x
 }) => {
-  const d = Ve, T = se(
-    () => Te[o] ?? Te.DEFAULT,
+  const E = He, _ = oe(
+    () => ge[o] ?? ge.DEFAULT,
     [o]
   );
   return /* @__PURE__ */ n.jsx(
-    Re,
+    _e,
     {
       id: t,
-      letters: d,
-      targetAnchors: T,
+      letters: E,
+      targetAnchors: _,
       width: c,
-      direction: s,
+      direction: a,
       color: i,
-      constants: a,
+      constants: s,
       style: h,
-      href: m,
-      link: g,
+      href: d,
+      link: T,
       antimagnet: x
     }
   );
-}, Ue = ({
+}, $e = ({
   id: t,
   width: c = 420,
-  mode: o = Ne.DEFAULT,
-  direction: s = ee.HORIZONTAL,
-  color: i = _e.WHITE,
-  block: a = !0,
+  mode: o = De.DEFAULT,
+  direction: a = Q.HORIZONTAL,
+  color: i = Te.WHITE,
+  block: s = !0,
   constants: h,
-  style: m,
-  href: g,
+  style: d,
+  href: T,
   link: x,
-  antimagnet: d
+  antimagnet: E
 }) => {
-  const T = se(
-    () => a ? [F, ce, le, ie, we, Q, ae, Le] : [F, ce, le, ie, we, Q, ae],
-    [a]
-  ), _ = se(() => {
+  const _ = oe(
+    () => s ? [F, ae, ce, le, xe, J, se, ye] : [F, ae, ce, le, xe, J, se],
+    [s]
+  ), R = oe(() => {
     const w = {
       K: [0, 0.35, 0.58, 0.66, 0.74, 0.83, 0.85, 1],
       M: [0, 0.3, 0.65, 0.73, 0.81, 0.88, 0.9, 1],
@@ -599,43 +595,43 @@ const me = 1 / 60, de = 2, ve = (t) => t.reduce((c, o) => c + o, 0), Se = (t, c,
       EXIT: [0, 0.09, 0.17, 0.4, 0.57, 0.81, 0.88, 1],
       DEFAULT: [0, 0.1436, 0.3227, 0.4783, 0.616, 0.7619, 0.7721, 0.9176]
     };
-    return (w[o] ?? w.DEFAULT).slice(0, T.length);
-  }, [o, T.length]);
+    return (w[o] ?? w.DEFAULT).slice(0, _.length);
+  }, [o, _.length]);
   return /* @__PURE__ */ n.jsx(
-    Re,
+    _e,
     {
       id: t,
-      letters: T,
-      targetAnchors: _,
+      letters: _,
+      targetAnchors: R,
       width: c,
-      direction: s,
+      direction: a,
       color: i,
       constants: h,
-      style: m,
-      href: g,
+      style: d,
+      href: T,
       link: x,
-      antimagnet: d
+      antimagnet: E
     }
   );
 };
 export {
-  Le as Block,
-  le as D,
-  ie as E,
+  ye as Block,
+  ce as D,
+  le as E,
   ke as G,
-  Q as I,
+  J as I,
   F as K,
-  Ue as KMDExitLogo,
-  Ie as KMDLogo,
-  He as KMDLogoDirection,
-  Ne as KMD_EXIT_LOGO_MODE,
-  ye as KMD_LOGO_MODE,
-  _e as LOGO_COLOR,
-  ee as LOGO_DIRECTION,
-  ce as M,
-  xe as N,
-  oe as S,
-  ae as T,
-  Ee as U,
-  we as X
+  $e as KMDExitLogo,
+  Ye as KMDLogo,
+  Ue as KMDLogoDirection,
+  De as KMD_EXIT_LOGO_MODE,
+  Pe as KMD_LOGO_MODE,
+  Te as LOGO_COLOR,
+  Q as LOGO_DIRECTION,
+  ae as M,
+  Ee as N,
+  ne as S,
+  se as T,
+  ve as U,
+  xe as X
 };

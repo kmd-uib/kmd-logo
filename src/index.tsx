@@ -1,4 +1,4 @@
-import { useState, useCallback, type CSSProperties } from 'react';
+import { useState, useCallback, useEffect, useRef, type CSSProperties } from 'react';
 import { createRoot } from 'react-dom/client';
 import { KMDLogo, KMDExitLogo, LOGO_DIRECTION, KMD_LOGO_MODE, KMD_EXIT_LOGO_MODE } from './Logo';
 import type { SpringConstants, LogoDirection, KMDLogoMode, KMDExitLogoMode, LogoLink } from './Logo';
@@ -10,6 +10,11 @@ const initialConstants: SpringConstants = {
     krandom: 1992700730,
     fcap: 15036,
 };
+
+const MENU_SHRINK_PX = 100;   // how many px the logo width shrinks when menu opens
+const MENU_ANIM_MS  = 100;    // animation duration in ms
+
+const easeInOut = (t: number) => (t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t);
 
 const headerStyle: CSSProperties = {
     fontSize: 20,
@@ -44,7 +49,7 @@ const RangeInput = ({ id, name, min, max, value, onChange }: RangeInputProps) =>
 );
 
 const App = () => {
-    const [width, setWidth] = useState(300);
+    const [width, setWidth] = useState(348); // matches real app logoWidth when menu closed
     const [logoType, setLogoType] = useState<LogoType>('KMD');
     const [mode, setMode] = useState<KMDLogoMode | KMDExitLogoMode>(KMD_LOGO_MODE.KUNST);
     const [direction, setDirection] = useState<LogoDirection>(LOGO_DIRECTION.HORIZONTAL);
@@ -55,6 +60,36 @@ const App = () => {
     const [linkUrl, setLinkUrl] = useState('https://kmd.uib.no');
     const [constants, setConstants] = useState<SpringConstants>(initialConstants);
     const [antimagnet, setAntimagnet] = useState(false);
+
+    // ── Menu shrink simulation ──────────────────────────────────────────────
+    const [menuOpen, setMenuOpen]         = useState(false);
+    const [menuProgress, setMenuProgress] = useState(0);
+    const menuProgressRef = useRef(0);
+    const menuRafRef      = useRef<number | null>(null);
+
+    useEffect(() => {
+        const target     = menuOpen ? 1 : 0;
+        const startTime  = performance.now();
+        const startProg  = menuProgressRef.current;
+
+        const tick = (now: number) => {
+            const t = Math.min((now - startTime) / MENU_ANIM_MS, 1);
+            const p = t >= 1 ? target : startProg + (target - startProg) * easeInOut(t);
+            menuProgressRef.current = p;
+            setMenuProgress(p);
+            if (t < 1) menuRafRef.current = requestAnimationFrame(tick);
+            else menuRafRef.current = null;
+        };
+
+        if (menuRafRef.current !== null) cancelAnimationFrame(menuRafRef.current);
+        menuRafRef.current = requestAnimationFrame(tick);
+
+        return () => { if (menuRafRef.current !== null) cancelAnimationFrame(menuRafRef.current); };
+    }, [menuOpen]);
+
+    const isMenuActive = menuOpen || menuProgress > 0;
+    const activeWidth  = isMenuActive ? Math.max(1, Math.round(width - MENU_SHRINK_PX * menuProgress)) : width;
+    // ───────────────────────────────────────────────────────────────────────
 
     const updateConstant = useCallback((id: keyof SpringConstants, value: string) => {
         setConstants(prev => ({ ...prev, [id]: parseInt(value) }));
@@ -160,6 +195,27 @@ const App = () => {
                 )}
             </div>
 
+            <h1 style={headerStyle}>Menu shrink simulation</h1>
+            <div style={{ marginBottom: '16px', display: 'flex', alignItems: 'center', gap: 12 }}>
+                <button
+                    onClick={() => setMenuOpen(o => !o)}
+                    style={{
+                        padding: '6px 18px',
+                        fontSize: 14,
+                        backgroundColor: menuOpen ? '#cc3300' : '#222',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: 4,
+                        cursor: 'pointer',
+                    }}
+                >
+                    {menuOpen ? '✕ Close menu' : '☰ Open menu'}
+                </button>
+                <span style={{ fontSize: 12, color: '#888' }}>
+                    width: {activeWidth}px &nbsp;|&nbsp; progress: {menuProgress.toFixed(2)}
+                </span>
+            </div>
+
             <h1 style={headerStyle}>Logo</h1>
             <div style={{ marginBottom: '10px' }}>
                 {(['white', 'black'] as const).map(c => (
@@ -219,9 +275,9 @@ const App = () => {
             <div style={{ display: 'flex', alignItems: 'flex-start', gap: '24px' }}>
                 <div style={{ border: '1px solid red', display: 'inline-block', flexShrink: 0, backgroundColor: color === 'white' ? 'black' : 'white' }}>
                     {logoType === 'KMD' ? (
-                        <KMDLogo width={width} mode={mode as KMDLogoMode} direction={direction} color={color} link={link} constants={constants} antimagnet={antimagnet} />
+                        <KMDLogo width={activeWidth} mode={mode as KMDLogoMode} direction={direction} color={color} link={link} constants={constants} antimagnet={antimagnet} />
                     ) : (
-                        <KMDExitLogo width={width} mode={mode as KMDExitLogoMode} direction={direction} color={color} block={block} link={link} constants={constants} antimagnet={antimagnet} />
+                        <KMDExitLogo width={activeWidth} mode={mode as KMDExitLogoMode} direction={direction} color={color} block={block} link={link} constants={constants} antimagnet={antimagnet} />
                     )}
                 </div>
                 <div style={{ fontSize: '12px', color: '#666' }}>

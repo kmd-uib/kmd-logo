@@ -1,6 +1,7 @@
 import {
   useState,
   useEffect,
+  useLayoutEffect,
   useRef,
   useCallback,
   useMemo,
@@ -9,6 +10,11 @@ import {
   type SVGProps,
   type MouseEvent,
 } from "react";
+
+// useLayoutEffect fires synchronously before paint (ideal for animation);
+// fall back to useEffect in SSR environments where window is not defined.
+const useIsomorphicLayoutEffect =
+  typeof window !== "undefined" ? useLayoutEffect : useEffect;
 import stepper, { type StepperParams } from "./stepper";
 import { D, E, G, I, K, M, N, S, T, U, X, Block } from "./svgs";
 
@@ -171,18 +177,11 @@ const BaseLogo = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const [cursorPos, setCursorPos] = useState<{ x: number; y: number } | null>(null);
 
-  // Keep mutable copies of props so the stable loop can always read the latest
-  // values without needing to be recreated.
+  // Prop mirrors — the stable RAF loop reads these instead of closing over props.
   const widthRef = useRef(width);
   const constantsRef = useRef(constants);
   const targetAnchorsRef = useRef(targetAnchors);
   const lettersLenRef = useRef(letters.length);
-
-  // Sync prop mirrors — defined before the animation effect so React runs them
-  // first, ensuring refs are fresh before startLoop() is invoked.
-  useEffect(() => { widthRef.current = width; }, [width]);
-  useEffect(() => { constantsRef.current = constants; }, [constants]);
-  useEffect(() => { targetAnchorsRef.current = targetAnchors; }, [targetAnchors]);
 
   // Stable loop — created once per mount, reads all live values through refs.
   const startLoop = useCallback(() => {
@@ -221,18 +220,32 @@ const BaseLogo = ({
     animationRef.current = requestAnimationFrame(step);
   }, []); // intentionally stable — no deps, reads everything via refs
 
-  // (Re-)start the loop only when meaningful layout or target props change.
-  useEffect(() => {
-    // If the letters array grew or shrank, reinitialise the physics arrays to
-    // avoid index-out-of-bounds in the stepper.
-    if (letters.length !== lettersLenRef.current) {
-      lettersLenRef.current = letters.length;
-      posRef.current = targetAnchors.map((a) => a * (width - lastLetterWidth));
-      velRef.current = letters.map(() => 0);
-      setPositions([...posRef.current]);
-    }
+  // Single layout effect — runs synchronously before paint on every prop change.
+  useIsomorphicLayoutEffect(() => {
+    widthRef.current = width;
+    constantsRef.current = constants;
+    targetAnchorsRef.current = targetAnchors;
 
-    startLoop();
+    const newTargets = targetAnchors.map((a) => a * (width - lastLetterWidth));
+
+    const didReinit = letters.length !== lettersLenRef.current;
+    if (didReinit) lettersLenRef.current = letters.length;
+
+    // Always snap positions to the targets for the current width and zero all
+    // velocities. When width changes frame-by-frame (e.g. during a menu
+    // animation), this fires before every paint via useLayoutEffect, which means:
+    //   • Letters are always in sync with the container — zero lag.
+    //   • Velocities never accumulate across width changes, so compressed
+    //     random/interaction forces cannot build up and send letters flying.
+    // Between snaps the physics loop runs from this clean state, producing
+    // the natural jitter effect only while the width is stable.
+    posRef.current = newTargets;
+    velRef.current = letters.map(() => 0);
+    setPositions([...newTargets]);
+
+    if (animationRef.current === null || didReinit) {
+      startLoop();
+    }
 
     return () => {
       if (animationRef.current !== null) {
@@ -240,7 +253,7 @@ const BaseLogo = ({
         animationRef.current = null;
       }
     };
-  }, [width, direction, targetAnchors, letters, startLoop]);
+  }, [width, direction, targetAnchors, letters, constants, startLoop]);
 
   const handleMouseMove = useCallback((e: MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
