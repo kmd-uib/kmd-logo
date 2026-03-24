@@ -50,6 +50,7 @@ const RangeInput = ({ id, name, min, max, value, onChange }: RangeInputProps) =>
 
 const App = () => {
     const [width, setWidth] = useState(348); // matches real app logoWidth when menu closed
+    const [height, setHeight] = useState(81);
     const [logoType, setLogoType] = useState<LogoType>('KMD');
     const [mode, setMode] = useState<KMDLogoMode | KMDExitLogoMode>(KMD_LOGO_MODE.KUNST);
     const [direction, setDirection] = useState<LogoDirection>(LOGO_DIRECTION.HORIZONTAL);
@@ -272,12 +273,25 @@ const App = () => {
                     {direction === LOGO_DIRECTION.VERTICAL ? 'Height' : 'Width'}: {width}px
                 </label>
             </div>
+            <div>
+                <input
+                    id="height"
+                    type="range"
+                    min={20}
+                    max={300}
+                    value={height}
+                    onChange={(event) => setHeight(parseInt(event.target.value))}
+                />
+                <label style={{ marginLeft: 10 }} htmlFor="height">
+                    {direction === LOGO_DIRECTION.VERTICAL ? 'Width' : 'Height'}: {height}px
+                </label>
+            </div>
             <div style={{ display: 'flex', alignItems: 'flex-start', gap: '24px' }}>
                 <div style={{ border: '1px solid red', display: 'inline-block', flexShrink: 0, backgroundColor: color === 'white' ? 'black' : 'white' }}>
                     {logoType === 'KMD' ? (
-                        <KMDLogo width={activeWidth} mode={mode as KMDLogoMode} direction={direction} color={color} link={link} constants={constants} antimagnet={antimagnet} />
+                        <KMDLogo width={activeWidth} height={height} mode={mode as KMDLogoMode} direction={direction} color={color} link={link} constants={constants} antimagnet={antimagnet} />
                     ) : (
-                        <KMDExitLogo width={activeWidth} mode={mode as KMDExitLogoMode} direction={direction} color={color} block={block} link={link} constants={constants} antimagnet={antimagnet} />
+                        <KMDExitLogo width={activeWidth} height={height} mode={mode as KMDExitLogoMode} direction={direction} color={color} block={block} link={link} constants={constants} antimagnet={antimagnet} />
                     )}
                 </div>
                 <div style={{ fontSize: '12px', color: '#666' }}>

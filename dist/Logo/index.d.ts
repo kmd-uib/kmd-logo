@@ -45,6 +45,7 @@ export interface LogoLink {
 export interface KMDLogoProps {
     id?: string;
     width?: number;
+    height?: number;
     /** @default 'DEFAULT' */
     mode?: "KUNST" | "MUSIKK" | "DESIGN" | "DEFAULT";
     /** @default 'horizontal' */
@@ -61,6 +62,7 @@ export interface KMDLogoProps {
 export interface KMDExitLogoProps {
     id?: string;
     width?: number;
+    height?: number;
     /** @default 'DEFAULT' */
     mode?: "K" | "M" | "D" | "EXIT" | "DEFAULT";
     /** @default 'horizontal' */
@@ -76,7 +78,12 @@ export interface KMDExitLogoProps {
     /** When true, letters repel the cursor like same-pole magnets (max 10 px). */
     antimagnet?: boolean;
 }
-declare const KMDLogo: ({ id, width, mode, direction, color, constants, style, href, link, antimagnet, }: KMDLogoProps) => import("react/jsx-runtime").JSX.Element;
-declare const KMDExitLogo: ({ id, width, mode, direction, color, block, constants, style, href, link, antimagnet, }: KMDExitLogoProps) => import("react/jsx-runtime").JSX.Element;
+export declare const LAST_LETTER_ASPECT: Readonly<{
+    readonly N: number;
+    readonly T: number;
+    readonly BLOCK: number;
+}>;
+declare const KMDLogo: ({ id, width, height, mode, direction, color, constants, style, href, link, antimagnet, }: KMDLogoProps) => import("react/jsx-runtime").JSX.Element;
+declare const KMDExitLogo: ({ id, width, height, mode, direction, color, block, constants, style, href, link, antimagnet, }: KMDExitLogoProps) => import("react/jsx-runtime").JSX.Element;
 export { KMDLogo, KMDExitLogo };
 export default KMDLogo;

@@ -71,6 +71,7 @@ export interface LogoLink {
 export interface KMDLogoProps {
   id?: string;
   width?: number;
+  height?: number;
   /** @default 'DEFAULT' */
   mode?: "KUNST" | "MUSIKK" | "DESIGN" | "DEFAULT";
   /** @default 'horizontal' */
@@ -88,6 +89,7 @@ export interface KMDLogoProps {
 export interface KMDExitLogoProps {
   id?: string;
   width?: number;
+  height?: number;
   /** @default 'DEFAULT' */
   mode?: "K" | "M" | "D" | "EXIT" | "DEFAULT";
   /** @default 'horizontal' */
@@ -114,14 +116,24 @@ const defaultConstants: Required<SpringConstants> = {
   fcap: 15036,
 };
 
-const lastLetterWidth = 57;
-const containerHeight = 81;
+// Aspect ratio (width/height) of the last letter's viewBox, used to compute
+// its rendered pixel width at any given height so physics anchors stay correct.
+// KMD  → last letter N  (viewBox 139.14 × 193.46)
+// EXIT → last letter Block (80×80) or T (141.38×193.46) depending on `block`
+export const LAST_LETTER_ASPECT = Object.freeze({
+  N: 139.14 / 193.46,
+  T: 141.38 / 193.46,
+  BLOCK: 80 / 80,
+} as const);
 
 interface BaseLogoProps {
   id?: string;
   letters: LetterComponent[];
   targetAnchors: number[];
   width: number;
+  height: number;
+  /** Aspect ratio (w/h) of the last letter's viewBox — used to scale the right-edge anchor. */
+  lastLetterAspectRatio: number;
   direction: LogoDirection;
   color: LogoColor;
   constants?: SpringConstants;
@@ -138,9 +150,10 @@ const calcRepulsion = (
   letterLeft: number,
   cursorX: number,
   cursorY: number,
+  height: number,
 ): number => {
   const letterCenterX = letterLeft + 30;
-  const letterCenterY = containerHeight / 2;
+  const letterCenterY = height / 2;
   const dx = cursorX - letterCenterX;
   const dy = cursorY - letterCenterY;
   const dist = Math.sqrt(dx * dx + dy * dy);
@@ -154,6 +167,8 @@ const BaseLogo = ({
   letters,
   targetAnchors,
   width,
+  height = 81,
+  lastLetterAspectRatio,
   direction,
   color,
   constants,
@@ -164,21 +179,28 @@ const BaseLogo = ({
 }: BaseLogoProps) => {
   const isVertical = direction === LOGO_DIRECTION.VERTICAL;
 
+  const scaledLastLetterWidth = lastLetterAspectRatio * height;
+
   // Physics state lives in refs so the animation loop never re-triggers effects.
-  const posRef = useRef<number[]>(targetAnchors.map((a) => a * (width - lastLetterWidth)));
+  const posRef = useRef<number[]>(
+    targetAnchors.map((a) => a * (width - scaledLastLetterWidth)),
+  );
   const velRef = useRef<number[]>(letters.map(() => 0));
 
   // Rendered positions drive the visual output.
   const [positions, setPositions] = useState<number[]>(() =>
-    targetAnchors.map((a) => a * (width - lastLetterWidth)),
+    targetAnchors.map((a) => a * (width - scaledLastLetterWidth)),
   );
 
   const animationRef = useRef<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const [cursorPos, setCursorPos] = useState<{ x: number; y: number } | null>(null);
+  const [cursorPos, setCursorPos] = useState<{ x: number; y: number } | null>(
+    null,
+  );
 
   // Prop mirrors — the stable RAF loop reads these instead of closing over props.
   const widthRef = useRef(width);
+  const lastLetterWidthRef = useRef(scaledLastLetterWidth);
   const constantsRef = useRef(constants);
   const targetAnchorsRef = useRef(targetAnchors);
   const lettersLenRef = useRef(letters.length);
@@ -192,6 +214,7 @@ const BaseLogo = ({
 
     const step = () => {
       const w = widthRef.current;
+      const llw = lastLetterWidthRef.current;
       const pos = posRef.current;
       const vel = velRef.current;
       const anchors = targetAnchorsRef.current;
@@ -201,9 +224,14 @@ const BaseLogo = ({
           ...defaultConstants,
           ...constantsRef.current,
           others: pos.filter((_, i) => i !== index),
-          width: w - lastLetterWidth,
+          width: w - llw,
         };
-        return stepper(x, vel[index], anchors[index] * (w - lastLetterWidth), params);
+        return stepper(
+          x,
+          vel[index],
+          anchors[index] * (w - llw),
+          params,
+        );
       });
 
       posRef.current = newValues.map((v) => v.newX);
@@ -223,10 +251,11 @@ const BaseLogo = ({
   // Single layout effect — runs synchronously before paint on every prop change.
   useIsomorphicLayoutEffect(() => {
     widthRef.current = width;
+    lastLetterWidthRef.current = scaledLastLetterWidth;
     constantsRef.current = constants;
     targetAnchorsRef.current = targetAnchors;
 
-    const newTargets = targetAnchors.map((a) => a * (width - lastLetterWidth));
+    const newTargets = targetAnchors.map((a) => a * (width - scaledLastLetterWidth));
 
     const didReinit = letters.length !== lettersLenRef.current;
     if (didReinit) lettersLenRef.current = letters.length;
@@ -253,7 +282,7 @@ const BaseLogo = ({
         animationRef.current = null;
       }
     };
-  }, [width, direction, targetAnchors, letters, constants, startLoop]);
+  }, [width, height, scaledLastLetterWidth, direction, targetAnchors, letters, constants, startLoop]);
 
   const handleMouseMove = useCallback((e: MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
@@ -294,7 +323,7 @@ const BaseLogo = ({
 
   // In vertical mode the outer div has the correct visual dimensions so that
   // parents (borders, flex containers, etc.) size themselves correctly.
-  // An inner div is rotated 90° clockwise with translateX(containerHeight)
+  // An inner div is rotated 90° clockwise with translateX(height)
   // so its visual top-left corner stays anchored at (0, 0) of the outer element.
   if (isVertical) {
     return (
@@ -306,7 +335,7 @@ const BaseLogo = ({
         style={{
           position: "relative",
           display: "block",
-          width: containerHeight,
+          width: height,
           height: width + linkPadding,
           ...style,
         }}
@@ -318,7 +347,7 @@ const BaseLogo = ({
             position: "absolute",
             top: 0,
             left: 0,
-            width: containerHeight,
+            width: height,
             height: width,
           }}
         >
@@ -326,24 +355,33 @@ const BaseLogo = ({
             style={{
               position: "absolute",
               width,
-              height: containerHeight,
-              transform: `translateX(${containerHeight}px) rotate(90deg)`,
+              height: height,
+              transform: `translateX(${height}px) rotate(90deg)`,
               transformOrigin: "0 0",
             }}
           >
             {letters.map((Letter, index) => {
               const repulsion =
                 antimagnet && cursorPos
-                  ? calcRepulsion(positions[index], cursorPos.y, cursorPos.x)
+                  ? calcRepulsion(
+                      positions[index],
+                      cursorPos.y,
+                      cursorPos.x,
+                      height,
+                    )
                   : 0;
               return (
                 <Letter
                   key={index}
                   fill={color}
+                  height={height}
                   style={{
                     position: "absolute",
                     left: positions[index],
-                    transform: repulsion !== 0 ? `translateX(${repulsion}px)` : undefined,
+                    transform:
+                      repulsion !== 0
+                        ? `translateX(${repulsion}px)`
+                        : undefined,
                   }}
                 />
               );
@@ -364,7 +402,7 @@ const BaseLogo = ({
       style={{
         position: "relative",
         display: "inline-block",
-        height: containerHeight + linkPadding,
+        height: height + linkPadding,
         width,
         ...style,
       }}
@@ -377,22 +415,29 @@ const BaseLogo = ({
           top: 0,
           left: 0,
           width,
-          height: containerHeight,
+          height: height,
         }}
       >
         {letters.map((Letter, index) => {
           const repulsion =
             antimagnet && cursorPos
-              ? calcRepulsion(positions[index], cursorPos.x, cursorPos.y)
+              ? calcRepulsion(
+                  positions[index],
+                  cursorPos.x,
+                  cursorPos.y,
+                  height,
+                )
               : 0;
           return (
             <Letter
               key={index}
               fill={color}
+              height={height}
               style={{
                 position: "absolute",
                 left: positions[index],
-                transform: repulsion !== 0 ? `translateX(${repulsion}px)` : undefined,
+                transform:
+                  repulsion !== 0 ? `translateX(${repulsion}px)` : undefined,
               }}
             />
           );
@@ -403,7 +448,25 @@ const BaseLogo = ({
   );
 };
 
-const KMD_LETTERS: LetterComponent[] = [K, U, N, S, T, M, U, S, I, K, K, D, E, S, I, G, N];
+const KMD_LETTERS: LetterComponent[] = [
+  K,
+  U,
+  N,
+  S,
+  T,
+  M,
+  U,
+  S,
+  I,
+  K,
+  K,
+  D,
+  E,
+  S,
+  I,
+  G,
+  N,
+];
 
 const KMD_ANCHORS: Record<KMDLogoMode, number[]> = {
   KUNST: [
@@ -439,6 +502,7 @@ const KMD_ANCHORS: Record<KMDLogoMode, number[]> = {
 const KMDLogo = ({
   id,
   width = 420,
+  height = 81,
   mode = KMD_LOGO_MODE.DEFAULT,
   direction = LOGO_DIRECTION.HORIZONTAL,
   color = LOGO_COLOR.WHITE,
@@ -463,6 +527,8 @@ const KMDLogo = ({
       letters={letters}
       targetAnchors={targetAnchors}
       width={width}
+      height={height}
+      lastLetterAspectRatio={LAST_LETTER_ASPECT.N}
       direction={direction}
       color={color}
       constants={constants}
@@ -477,6 +543,7 @@ const KMDLogo = ({
 const KMDExitLogo = ({
   id,
   width = 420,
+  height = 81,
   mode = KMD_EXIT_LOGO_MODE.DEFAULT,
   direction = LOGO_DIRECTION.HORIZONTAL,
   color = LOGO_COLOR.WHITE,
@@ -510,6 +577,8 @@ const KMDExitLogo = ({
       letters={letters}
       targetAnchors={targetAnchors}
       width={width}
+      height={height}
+      lastLetterAspectRatio={block ? LAST_LETTER_ASPECT.BLOCK : LAST_LETTER_ASPECT.T}
       direction={direction}
       color={color}
       constants={constants}
