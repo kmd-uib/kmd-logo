@@ -226,12 +226,7 @@ const BaseLogo = ({
           others: pos.filter((_, i) => i !== index),
           width: w - llw,
         };
-        return stepper(
-          x,
-          vel[index],
-          anchors[index] * (w - llw),
-          params,
-        );
+        return stepper(x, vel[index], anchors[index] * (w - llw), params);
       });
 
       posRef.current = newValues.map((v) => v.newX);
@@ -255,7 +250,9 @@ const BaseLogo = ({
     constantsRef.current = constants;
     targetAnchorsRef.current = targetAnchors;
 
-    const newTargets = targetAnchors.map((a) => a * (width - scaledLastLetterWidth));
+    const newTargets = targetAnchors.map(
+      (a) => a * (width - scaledLastLetterWidth),
+    );
 
     const didReinit = letters.length !== lettersLenRef.current;
     if (didReinit) lettersLenRef.current = letters.length;
@@ -282,7 +279,16 @@ const BaseLogo = ({
         animationRef.current = null;
       }
     };
-  }, [width, height, scaledLastLetterWidth, direction, targetAnchors, letters, constants, startLoop]);
+  }, [
+    width,
+    height,
+    scaledLastLetterWidth,
+    direction,
+    targetAnchors,
+    letters,
+    constants,
+    startLoop,
+  ]);
 
   const handleMouseMove = useCallback((e: MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
@@ -308,8 +314,7 @@ const BaseLogo = ({
         : {})}
       style={{
         position: "absolute",
-        bottom: 0,
-        left: 0,
+
         color,
         fontSize: linkFontSize,
         lineHeight: 1,
@@ -578,7 +583,9 @@ const KMDExitLogo = ({
       targetAnchors={targetAnchors}
       width={width}
       height={height}
-      lastLetterAspectRatio={block ? LAST_LETTER_ASPECT.BLOCK : LAST_LETTER_ASPECT.T}
+      lastLetterAspectRatio={
+        block ? LAST_LETTER_ASPECT.BLOCK : LAST_LETTER_ASPECT.T
+      }
       direction={direction}
       color={color}
       constants={constants}

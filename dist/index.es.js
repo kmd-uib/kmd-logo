@@ -324,12 +324,7 @@ const de = 1 / 60, me = 2, ve = (t) => t.reduce((a, c) => a + c, 0), Le = (t, a,
           ...P.current,
           others: r.filter((W, ee) => ee !== i)
         };
-        return Le(
-          g,
-          l[i],
-          p[i] * (v - e),
-          S
-        );
+        return Le(g, l[i], p[i] * (v - e), S);
       });
       k.current = L.map((g) => g.newX), O.current = L.map((g) => g.newV), y([...k.current]), L.every((g) => g.done) ? h.current = null : h.current = requestAnimationFrame(f);
     };
@@ -337,11 +332,22 @@ const de = 1 / 60, me = 2, ve = (t) => t.reduce((a, c) => a + c, 0), Le = (t, a,
   }, []);
   ye(() => {
     B.current = s, $.current = T, P.current = x, X.current = c;
-    const f = c.map((e) => e * (s - T)), v = a.length !== Z.current;
+    const f = c.map(
+      (e) => e * (s - T)
+    ), v = a.length !== Z.current;
     return v && (Z.current = a.length), k.current = f, O.current = a.map(() => 0), y([...f]), (h.current === null || v) && C(), () => {
       h.current !== null && (cancelAnimationFrame(h.current), h.current = null);
     };
-  }, [s, o, T, d, c, a, x, C]);
+  }, [
+    s,
+    o,
+    T,
+    d,
+    c,
+    a,
+    x,
+    C
+  ]);
   const V = te((f) => {
     if (!N.current) return;
     const v = N.current.getBoundingClientRect();
@@ -356,8 +362,6 @@ const de = 1 / 60, me = 2, ve = (t) => t.reduce((a, c) => a + c, 0), Le = (t, a,
       ...G(w.url) ? { target: "_blank", rel: "noopener noreferrer" } : {},
       style: {
         position: "absolute",
-        bottom: 0,
-        left: 0,
         color: m,
         fontSize: D,
         lineHeight: 1,
