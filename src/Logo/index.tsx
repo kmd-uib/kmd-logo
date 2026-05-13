@@ -243,11 +243,19 @@ const BaseLogo = ({
     animationRef.current = requestAnimationFrame(step);
   }, []); // intentionally stable — no deps, reads everything via refs
 
+  // Sync constants ref without disturbing the running animation.
+  // If the loop already stopped (letters settled), restart it so new constants take effect.
+  useEffect(() => {
+    constantsRef.current = constants;
+    if (animationRef.current === null) {
+      startLoop();
+    }
+  }, [constants, startLoop]);
+
   // Single layout effect — runs synchronously before paint on every prop change.
   useIsomorphicLayoutEffect(() => {
     widthRef.current = width;
     lastLetterWidthRef.current = scaledLastLetterWidth;
-    constantsRef.current = constants;
     targetAnchorsRef.current = targetAnchors;
 
     const newTargets = targetAnchors.map(
@@ -286,7 +294,6 @@ const BaseLogo = ({
     direction,
     targetAnchors,
     letters,
-    constants,
     startLoop,
   ]);
 

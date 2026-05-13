@@ -1,4 +1,4 @@
-import ge, { useMemo as ne, useRef as A, useState as ie, useCallback as te, useLayoutEffect as be, useEffect as je } from "react";
+import be, { useMemo as ne, useRef as A, useState as ie, useCallback as te, useEffect as Re, useLayoutEffect as je } from "react";
 var q = { exports: {} }, I = {};
 var ue;
 function Oe() {
@@ -34,7 +34,7 @@ function Ae() {
       switch (e) {
         case O:
           return "Fragment";
-        case y:
+        case N:
           return "Profiler";
         case j:
           return "StrictMode";
@@ -49,18 +49,18 @@ function Ae() {
         switch (typeof e.tag == "number" && console.error(
           "Received an unexpected object in getComponentNameFromType(). This is likely a bug in React. Please file an issue."
         ), e.$$typeof) {
-          case k:
+          case y:
             return "Portal";
-          case N:
+          case P:
             return e.displayName || "Context";
-          case h:
+          case v:
             return (e._context.displayName || "Context") + ".Consumer";
           case M:
             var r = e.render;
             return e = e.displayName, e || (e = r.displayName || r.name || "", e = e !== "" ? "ForwardRef(" + e + ")" : "ForwardRef"), e;
           case $:
             return r = e.displayName || null, r !== null ? r : t(e.type) || "Memo";
-          case P:
+          case C:
             r = e._payload, e = e._init;
             try {
               return t(e(r));
@@ -91,7 +91,7 @@ function Ae() {
     }
     function s(e) {
       if (e === O) return "<>";
-      if (typeof e == "object" && e !== null && e.$$typeof === P)
+      if (typeof e == "object" && e !== null && e.$$typeof === C)
         return "<...>";
       try {
         var r = t(e);
@@ -101,7 +101,7 @@ function Ae() {
       }
     }
     function o() {
-      var e = C.A;
+      var e = L.A;
       return e === null ? null : e.getOwner();
     }
     function u() {
@@ -132,7 +132,7 @@ function Ae() {
         "Accessing element.ref was removed in React 19. ref is now a regular prop. It will be removed from the JSX Element type in a future release."
       )), e = this.props.ref, e !== void 0 ? e : null;
     }
-    function R(e, r, l, p, L, g) {
+    function R(e, r, l, p, S, g) {
       var i = l.ref;
       return e = {
         $$typeof: T,
@@ -157,7 +157,7 @@ function Ae() {
         configurable: !1,
         enumerable: !1,
         writable: !0,
-        value: L
+        value: S
       }), Object.defineProperty(e, "_debugTask", {
         configurable: !1,
         enumerable: !1,
@@ -165,7 +165,7 @@ function Ae() {
         value: g
       }), Object.freeze && (Object.freeze(e.props), Object.freeze(e)), e;
     }
-    function _(e, r, l, p, L, g) {
+    function _(e, r, l, p, S, g) {
       var i = r.children;
       if (i !== void 0)
         if (p)
@@ -180,10 +180,10 @@ function Ae() {
         else w(i);
       if (V.call(r, "key")) {
         i = t(e);
-        var S = Object.keys(r).filter(function(ee) {
+        var k = Object.keys(r).filter(function(ee) {
           return ee !== "key";
         });
-        p = 0 < S.length ? "{key: someKey, " + S.join(": ..., ") + ": ...}" : "{key: someKey}", v[i + p] || (S = 0 < S.length ? "{" + S.join(": ..., ") + ": ...}" : "{}", console.error(
+        p = 0 < k.length ? "{key: someKey, " + k.join(": ..., ") + ": ...}" : "{key: someKey}", E[i + p] || (k = 0 < k.length ? "{" + k.join(": ..., ") + ": ...}" : "{}", console.error(
           `A props object containing a "key" prop is being spread into JSX:
   let props = %s;
   <%s {...props} />
@@ -192,9 +192,9 @@ React keys must be passed directly to JSX without using spread:
   <%s key={someKey} {...props} />`,
           p,
           i,
-          S,
+          k,
           i
-        ), v[i + p] = !0);
+        ), E[i + p] = !0);
       }
       if (i = null, l !== void 0 && (c(l), i = "" + l), d(r) && (c(r.key), i = "" + r.key), "key" in r) {
         l = {};
@@ -209,17 +209,17 @@ React keys must be passed directly to JSX without using spread:
         i,
         l,
         o(),
-        L,
+        S,
         g
       );
     }
     function w(e) {
-      E(e) ? e._store && (e._store.validated = 1) : typeof e == "object" && e !== null && e.$$typeof === P && (e._payload.status === "fulfilled" ? E(e._payload.value) && e._payload.value._store && (e._payload.value._store.validated = 1) : e._store && (e._store.validated = 1));
+      h(e) ? e._store && (e._store.validated = 1) : typeof e == "object" && e !== null && e.$$typeof === C && (e._payload.status === "fulfilled" ? h(e._payload.value) && e._payload.value._store && (e._payload.value._store.validated = 1) : e._store && (e._store.validated = 1));
     }
-    function E(e) {
+    function h(e) {
       return typeof e == "object" && e !== null && e.$$typeof === T;
     }
-    var b = ge, T = /* @__PURE__ */ Symbol.for("react.transitional.element"), k = /* @__PURE__ */ Symbol.for("react.portal"), O = /* @__PURE__ */ Symbol.for("react.fragment"), j = /* @__PURE__ */ Symbol.for("react.strict_mode"), y = /* @__PURE__ */ Symbol.for("react.profiler"), h = /* @__PURE__ */ Symbol.for("react.consumer"), N = /* @__PURE__ */ Symbol.for("react.context"), M = /* @__PURE__ */ Symbol.for("react.forward_ref"), K = /* @__PURE__ */ Symbol.for("react.suspense"), B = /* @__PURE__ */ Symbol.for("react.suspense_list"), $ = /* @__PURE__ */ Symbol.for("react.memo"), P = /* @__PURE__ */ Symbol.for("react.lazy"), X = /* @__PURE__ */ Symbol.for("react.activity"), Z = /* @__PURE__ */ Symbol.for("react.client.reference"), C = b.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, V = Object.prototype.hasOwnProperty, z = Array.isArray, D = console.createTask ? console.createTask : function() {
+    var b = be, T = /* @__PURE__ */ Symbol.for("react.transitional.element"), y = /* @__PURE__ */ Symbol.for("react.portal"), O = /* @__PURE__ */ Symbol.for("react.fragment"), j = /* @__PURE__ */ Symbol.for("react.strict_mode"), N = /* @__PURE__ */ Symbol.for("react.profiler"), v = /* @__PURE__ */ Symbol.for("react.consumer"), P = /* @__PURE__ */ Symbol.for("react.context"), M = /* @__PURE__ */ Symbol.for("react.forward_ref"), K = /* @__PURE__ */ Symbol.for("react.suspense"), B = /* @__PURE__ */ Symbol.for("react.suspense_list"), $ = /* @__PURE__ */ Symbol.for("react.memo"), C = /* @__PURE__ */ Symbol.for("react.lazy"), X = /* @__PURE__ */ Symbol.for("react.activity"), Z = /* @__PURE__ */ Symbol.for("react.client.reference"), L = b.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, V = Object.prototype.hasOwnProperty, z = Array.isArray, D = console.createTask ? console.createTask : function() {
       return null;
     };
     b = {
@@ -230,9 +230,9 @@ React keys must be passed directly to JSX without using spread:
     var F, G = {}, H = b.react_stack_bottom_frame.bind(
       b,
       u
-    )(), f = D(s(u)), v = {};
+    )(), f = D(s(u)), E = {};
     U.Fragment = O, U.jsx = function(e, r, l) {
-      var p = 1e4 > C.recentlyCreatedOwnerStacks++;
+      var p = 1e4 > L.recentlyCreatedOwnerStacks++;
       return _(
         e,
         r,
@@ -242,7 +242,7 @@ React keys must be passed directly to JSX without using spread:
         p ? D(s(e)) : f
       );
     }, U.jsxs = function(e, r, l) {
-      var p = 1e4 > C.recentlyCreatedOwnerStacks++;
+      var p = 1e4 > L.recentlyCreatedOwnerStacks++;
       return _(
         e,
         r,
@@ -260,9 +260,9 @@ function Me() {
 }
 var n = Me();
 const de = 1 / 60, me = 2, ve = (t) => t.reduce((a, c) => a + c, 0), Le = (t, a, c, { k: s, b: o, others: u, ki: d, krandom: m, fcap: x }) => {
-  const R = -s * (t - c), _ = -o * a, w = ve(u.map((h) => Math.sign(t - h) * d / Math.max(Math.pow(t - h, 2), 1e-11))), E = ve(u.map((h) => Math.abs(t - h))), b = (Math.random() - 0.5) * m / Math.max(Math.pow(E, 2), 1e-13), T = R + _ + w + b, O = Math.sign(T) * Math.min(Math.abs(T), x), j = a + O * de, y = t + j * de;
-  return Math.abs(j) < me && Math.abs(y - c) < me ? { newX: c, newV: 0, done: !0 } : { newX: y, newV: j, done: !1 };
-}, Y = (t) => /* @__PURE__ */ n.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 139.64 193.46", height: "79px", ...t, children: /* @__PURE__ */ n.jsx("path", { d: "M9.92,118.31,118.81,0H132.7L51.34,87.06l88.3,106.4H126.49L44.89,94l-35,37.46v62H0V0H9.92Z" }) }), Ee = (t) => /* @__PURE__ */ n.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 152.29 195.94", height: "79px", ...t, children: /* @__PURE__ */ n.jsx("path", { d: "M0,129.23V0H10.17V131c0,33.49,15.13,55.81,66,55.81s66-22.32,66-55.81V0h10.17V129.23c0,40.68-18.85,66.72-76.15,66.72S0,169.9,0,129.23Z" }) }), he = (t) => /* @__PURE__ */ n.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 139.14 193.46", height: "79px", ...t, children: /* @__PURE__ */ n.jsx("path", { d: "M38.69,58.53,8.93,11.9l.74,67.47V193.46H0V0H12.15l88.3,134.93,29.76,46.63-.74-67.46V0h9.67V193.46H127Z" }) }), re = (t) => /* @__PURE__ */ n.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 141.87 198.43", height: "79px", ...t, children: /* @__PURE__ */ n.jsx("path", { d: "M0,152l10.17-1.49c3.47,25,16.87,38.94,60.77,38.94,27,0,60.77-9.92,60.77-45.14,0-29.52-11.16-40.43-58.53-45.64C32,94.25,6.7,87.55,6.7,51.34,6.7,14.14,37.95,0,71.18,0c47.87,0,65.73,17.86,69.2,44.65l-10.17,1.49c-3.47-24.31-19.84-37.2-59-37.2-18.85,0-54.07,5.7-54.07,42.41,0,25.3,11.66,33.49,56.8,38.2,47.13,5,68,15.38,68,54.82,0,38.44-34,54.07-70.94,54.07C20.09,198.43,3.72,179.33,0,152Z" }) }), oe = (t) => /* @__PURE__ */ n.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 141.38 193.46", height: "79px", ...t, children: /* @__PURE__ */ n.jsx("path", { d: "M75.65,193.46H65.73V8.93H0V0H141.38V8.93H75.65Z" }) }), se = (t) => /* @__PURE__ */ n.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 174.11 193.45", height: "79px", ...t, children: /* @__PURE__ */ n.jsx("path", { d: "M26,58.78,8.93,17.11l.75,62.25V193.45H0V0H11.91l57,138.15L87.05,183l18.1-44.89L162.2,0h11.9V193.45h-9.67V79.37l.75-62.25L148.07,58.78,92.51,193.45H81.59Z" }) }), J = (t) => /* @__PURE__ */ n.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 9.92 193.45", height: "79px", ...t, children: /* @__PURE__ */ n.jsx("path", { d: "M9.92,193.45H0V0H9.92Z" }) }), ae = (t) => /* @__PURE__ */ n.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 151.3 193.46", height: "79px", ...t, children: /* @__PURE__ */ n.jsx("path", { d: "M63.74,193.46H0V0H63.74C120,0,151.3,21.33,151.3,96.73S120,193.46,63.74,193.46Zm2.73-8.93c52.34,0,74.41-20.84,74.41-87.81S118.81,8.93,66.47,8.93H9.92V184.54Z" }) }), ce = (t) => /* @__PURE__ */ n.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 133.94 193.46", height: "79px", ...t, children: /* @__PURE__ */ n.jsx("path", { d: "M129,0V8.93H9.92V89.79H119.05v8.93H9.92v85.82h124v8.93H0V0Z" }) }), Se = (t) => /* @__PURE__ */ n.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 154.77 198.43", height: "79px", ...t, children: /* @__PURE__ */ n.jsx("path", { d: "M144.85,165V101.2H95.24V92.27h59.53v76.28c-17.35,21.07-40.16,29.88-72.92,29.88C24.8,198.43,0,160,0,99.21S24.8,0,81.85,0c46.88,0,66.72,21.33,72.43,50.6l-10.42,1.49c-5-27-23.56-43.66-62-43.16C31.5,9.67,10.42,42.66,10.42,99.21S31.49,189.5,81.85,189.5C113.1,189.5,131.72,180.06,144.85,165Z" }) }), xe = (t) => /* @__PURE__ */ n.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 141.87 193.46", height: "79px", ...t, children: /* @__PURE__ */ n.jsx("path", { d: "M56.8,96.73,4.96,0H18.11l44.89,82.32L107.89,0h13.15L69.2,96.73l51.84,96.73H107.89L62.75,111.14,17.61,193.46H4.46Z" }) }), ke = (t) => /* @__PURE__ */ n.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 80 80", height: "79px", ...t, children: /* @__PURE__ */ n.jsx("path", { d: "M40,0V40H80V0Z" }) }), ye = typeof window < "u" ? be : je, Q = Object.freeze({
+  const R = -s * (t - c), _ = -o * a, w = ve(u.map((v) => Math.sign(t - v) * d / Math.max(Math.pow(t - v, 2), 1e-11))), h = ve(u.map((v) => Math.abs(t - v))), b = (Math.random() - 0.5) * m / Math.max(Math.pow(h, 2), 1e-13), T = R + _ + w + b, O = Math.sign(T) * Math.min(Math.abs(T), x), j = a + O * de, N = t + j * de;
+  return Math.abs(j) < me && Math.abs(N - c) < me ? { newX: c, newV: 0, done: !0 } : { newX: N, newV: j, done: !1 };
+}, Y = (t) => /* @__PURE__ */ n.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 139.64 193.46", height: "79px", ...t, children: /* @__PURE__ */ n.jsx("path", { d: "M9.92,118.31,118.81,0H132.7L51.34,87.06l88.3,106.4H126.49L44.89,94l-35,37.46v62H0V0H9.92Z" }) }), Ee = (t) => /* @__PURE__ */ n.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 152.29 195.94", height: "79px", ...t, children: /* @__PURE__ */ n.jsx("path", { d: "M0,129.23V0H10.17V131c0,33.49,15.13,55.81,66,55.81s66-22.32,66-55.81V0h10.17V129.23c0,40.68-18.85,66.72-76.15,66.72S0,169.9,0,129.23Z" }) }), he = (t) => /* @__PURE__ */ n.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 139.14 193.46", height: "79px", ...t, children: /* @__PURE__ */ n.jsx("path", { d: "M38.69,58.53,8.93,11.9l.74,67.47V193.46H0V0H12.15l88.3,134.93,29.76,46.63-.74-67.46V0h9.67V193.46H127Z" }) }), re = (t) => /* @__PURE__ */ n.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 141.87 198.43", height: "79px", ...t, children: /* @__PURE__ */ n.jsx("path", { d: "M0,152l10.17-1.49c3.47,25,16.87,38.94,60.77,38.94,27,0,60.77-9.92,60.77-45.14,0-29.52-11.16-40.43-58.53-45.64C32,94.25,6.7,87.55,6.7,51.34,6.7,14.14,37.95,0,71.18,0c47.87,0,65.73,17.86,69.2,44.65l-10.17,1.49c-3.47-24.31-19.84-37.2-59-37.2-18.85,0-54.07,5.7-54.07,42.41,0,25.3,11.66,33.49,56.8,38.2,47.13,5,68,15.38,68,54.82,0,38.44-34,54.07-70.94,54.07C20.09,198.43,3.72,179.33,0,152Z" }) }), oe = (t) => /* @__PURE__ */ n.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 141.38 193.46", height: "79px", ...t, children: /* @__PURE__ */ n.jsx("path", { d: "M75.65,193.46H65.73V8.93H0V0H141.38V8.93H75.65Z" }) }), se = (t) => /* @__PURE__ */ n.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 174.11 193.45", height: "79px", ...t, children: /* @__PURE__ */ n.jsx("path", { d: "M26,58.78,8.93,17.11l.75,62.25V193.45H0V0H11.91l57,138.15L87.05,183l18.1-44.89L162.2,0h11.9V193.45h-9.67V79.37l.75-62.25L148.07,58.78,92.51,193.45H81.59Z" }) }), J = (t) => /* @__PURE__ */ n.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 9.92 193.45", height: "79px", ...t, children: /* @__PURE__ */ n.jsx("path", { d: "M9.92,193.45H0V0H9.92Z" }) }), ae = (t) => /* @__PURE__ */ n.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 151.3 193.46", height: "79px", ...t, children: /* @__PURE__ */ n.jsx("path", { d: "M63.74,193.46H0V0H63.74C120,0,151.3,21.33,151.3,96.73S120,193.46,63.74,193.46Zm2.73-8.93c52.34,0,74.41-20.84,74.41-87.81S118.81,8.93,66.47,8.93H9.92V184.54Z" }) }), ce = (t) => /* @__PURE__ */ n.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 133.94 193.46", height: "79px", ...t, children: /* @__PURE__ */ n.jsx("path", { d: "M129,0V8.93H9.92V89.79H119.05v8.93H9.92v85.82h124v8.93H0V0Z" }) }), Se = (t) => /* @__PURE__ */ n.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 154.77 198.43", height: "79px", ...t, children: /* @__PURE__ */ n.jsx("path", { d: "M144.85,165V101.2H95.24V92.27h59.53v76.28c-17.35,21.07-40.16,29.88-72.92,29.88C24.8,198.43,0,160,0,99.21S24.8,0,81.85,0c46.88,0,66.72,21.33,72.43,50.6l-10.42,1.49c-5-27-23.56-43.66-62-43.16C31.5,9.67,10.42,42.66,10.42,99.21S31.49,189.5,81.85,189.5C113.1,189.5,131.72,180.06,144.85,165Z" }) }), xe = (t) => /* @__PURE__ */ n.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 141.87 193.46", height: "79px", ...t, children: /* @__PURE__ */ n.jsx("path", { d: "M56.8,96.73,4.96,0H18.11l44.89,82.32L107.89,0h13.15L69.2,96.73l51.84,96.73H107.89L62.75,111.14,17.61,193.46H4.46Z" }) }), ke = (t) => /* @__PURE__ */ n.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 80 80", height: "79px", ...t, children: /* @__PURE__ */ n.jsx("path", { d: "M40,0V40H80V0Z" }) }), ye = typeof window < "u" ? je : Re, Q = Object.freeze({
   HORIZONTAL: "horizontal",
   VERTICAL: "vertical"
 }), Ne = Object.freeze({
@@ -276,7 +276,7 @@ const de = 1 / 60, me = 2, ve = (t) => t.reduce((a, c) => a + c, 0), Le = (t, a,
   D: "D",
   EXIT: "EXIT",
   DEFAULT: "DEFAULT"
-}), Re = Object.freeze({
+}), _e = Object.freeze({
   BLACK: "black",
   WHITE: "white"
 }), Ie = Q, Ce = {
@@ -294,7 +294,7 @@ const de = 1 / 60, me = 2, ve = (t) => t.reduce((a, c) => a + c, 0), Le = (t, a,
   if (x === 0) return 0;
   const R = De * Math.exp(-x / Ve);
   return -(d / x) * R;
-}, _e = ({
+}, ge = ({
   id: t,
   letters: a,
   targetAnchors: c,
@@ -307,36 +307,38 @@ const de = 1 / 60, me = 2, ve = (t) => t.reduce((a, c) => a + c, 0), Le = (t, a,
   style: R,
   href: _,
   link: w,
-  antimagnet: E
+  antimagnet: h
 }) => {
-  const b = d === Q.VERTICAL, T = u * o, k = A(
+  const b = d === Q.VERTICAL, T = u * o, y = A(
     c.map((f) => f * (s - T))
-  ), O = A(a.map(() => 0)), [j, y] = ie(
+  ), O = A(a.map(() => 0)), [j, N] = ie(
     () => c.map((f) => f * (s - T))
-  ), h = A(null), N = A(null), [M, K] = ie(
+  ), v = A(null), P = A(null), [M, K] = ie(
     null
-  ), B = A(s), $ = A(T), P = A(x), X = A(c), Z = A(a.length), C = te(() => {
-    h.current !== null && (cancelAnimationFrame(h.current), h.current = null);
+  ), B = A(s), $ = A(T), C = A(x), X = A(c), Z = A(a.length), L = te(() => {
+    v.current !== null && (cancelAnimationFrame(v.current), v.current = null);
     const f = () => {
-      const v = B.current, e = $.current, r = k.current, l = O.current, p = X.current, L = r.map((g, i) => {
-        const S = {
+      const E = B.current, e = $.current, r = y.current, l = O.current, p = X.current, S = r.map((g, i) => {
+        const k = {
           ...Ce,
-          ...P.current,
+          ...C.current,
           others: r.filter((W, ee) => ee !== i)
         };
-        return Le(g, l[i], p[i] * (v - e), S);
+        return Le(g, l[i], p[i] * (E - e), k);
       });
-      k.current = L.map((g) => g.newX), O.current = L.map((g) => g.newV), y([...k.current]), L.every((g) => g.done) ? h.current = null : h.current = requestAnimationFrame(f);
+      y.current = S.map((g) => g.newX), O.current = S.map((g) => g.newV), N([...y.current]), S.every((g) => g.done) ? v.current = null : v.current = requestAnimationFrame(f);
     };
-    h.current = requestAnimationFrame(f);
+    v.current = requestAnimationFrame(f);
   }, []);
-  ye(() => {
-    B.current = s, $.current = T, P.current = x, X.current = c;
+  Re(() => {
+    C.current = x, v.current === null && L();
+  }, [x, L]), ye(() => {
+    B.current = s, $.current = T, X.current = c;
     const f = c.map(
       (e) => e * (s - T)
-    ), v = a.length !== Z.current;
-    return v && (Z.current = a.length), k.current = f, O.current = a.map(() => 0), y([...f]), (h.current === null || v) && C(), () => {
-      h.current !== null && (cancelAnimationFrame(h.current), h.current = null);
+    ), E = a.length !== Z.current;
+    return E && (Z.current = a.length), y.current = f, O.current = a.map(() => 0), N([...f]), (v.current === null || E) && L(), () => {
+      v.current !== null && (cancelAnimationFrame(v.current), v.current = null);
     };
   }, [
     s,
@@ -345,13 +347,12 @@ const de = 1 / 60, me = 2, ve = (t) => t.reduce((a, c) => a + c, 0), Le = (t, a,
     d,
     c,
     a,
-    x,
-    C
+    L
   ]);
   const V = te((f) => {
-    if (!N.current) return;
-    const v = N.current.getBoundingClientRect();
-    K({ x: f.clientX - v.left, y: f.clientY - v.top });
+    if (!P.current) return;
+    const E = P.current.getBoundingClientRect();
+    K({ x: f.clientX - E.left, y: f.clientY - E.top });
   }, []), z = te(() => {
     K(null);
   }, []), D = w?.fontSize ?? 10, F = w ? D + 20 : 0, G = (f) => /^(https?:)?\/\/|^mailto:/.test(f), H = w ? /* @__PURE__ */ n.jsxs(
@@ -378,9 +379,9 @@ const de = 1 / 60, me = 2, ve = (t) => t.reduce((a, c) => a + c, 0), Le = (t, a,
     "div",
     {
       id: t,
-      ref: N,
-      onMouseMove: E ? V : void 0,
-      onMouseLeave: E ? z : void 0,
+      ref: P,
+      onMouseMove: h ? V : void 0,
+      onMouseLeave: h ? z : void 0,
       style: {
         position: "relative",
         display: "block",
@@ -411,9 +412,9 @@ const de = 1 / 60, me = 2, ve = (t) => t.reduce((a, c) => a + c, 0), Le = (t, a,
                   transform: `translateX(${o}px) rotate(90deg)`,
                   transformOrigin: "0 0"
                 },
-                children: a.map((f, v) => {
-                  const e = E && M ? we(
-                    j[v],
+                children: a.map((f, E) => {
+                  const e = h && M ? we(
+                    j[E],
                     M.y,
                     M.x,
                     o
@@ -425,11 +426,11 @@ const de = 1 / 60, me = 2, ve = (t) => t.reduce((a, c) => a + c, 0), Le = (t, a,
                       height: o,
                       style: {
                         position: "absolute",
-                        left: j[v],
+                        left: j[E],
                         transform: e !== 0 ? `translateX(${e}px)` : void 0
                       }
                     },
-                    v
+                    E
                   );
                 })
               }
@@ -443,9 +444,9 @@ const de = 1 / 60, me = 2, ve = (t) => t.reduce((a, c) => a + c, 0), Le = (t, a,
     "div",
     {
       id: t,
-      ref: N,
-      onMouseMove: E ? V : void 0,
-      onMouseLeave: E ? z : void 0,
+      ref: P,
+      onMouseMove: h ? V : void 0,
+      onMouseLeave: h ? z : void 0,
       style: {
         position: "relative",
         display: "inline-block",
@@ -466,9 +467,9 @@ const de = 1 / 60, me = 2, ve = (t) => t.reduce((a, c) => a + c, 0), Le = (t, a,
               width: s,
               height: o
             },
-            children: a.map((f, v) => {
-              const e = E && M ? we(
-                j[v],
+            children: a.map((f, E) => {
+              const e = h && M ? we(
+                j[E],
                 M.x,
                 M.y,
                 o
@@ -480,11 +481,11 @@ const de = 1 / 60, me = 2, ve = (t) => t.reduce((a, c) => a + c, 0), Le = (t, a,
                   height: o,
                   style: {
                     position: "absolute",
-                    left: j[v],
+                    left: j[E],
                     transform: e !== 0 ? `translateX(${e}px)` : void 0
                   }
                 },
-                v
+                E
               );
             })
           }
@@ -594,23 +595,23 @@ const de = 1 / 60, me = 2, ve = (t) => t.reduce((a, c) => a + c, 0), Le = (t, a,
   height: c = 81,
   mode: s = Ne.DEFAULT,
   direction: o = Q.HORIZONTAL,
-  color: u = Re.WHITE,
+  color: u = _e.WHITE,
   constants: d,
   style: m,
   href: x,
   link: R,
   antimagnet: _
 }) => {
-  const w = Fe, E = ne(
+  const w = Fe, h = ne(
     () => Te[s] ?? Te.DEFAULT,
     [s]
   );
   return /* @__PURE__ */ n.jsx(
-    _e,
+    ge,
     {
       id: t,
       letters: w,
-      targetAnchors: E,
+      targetAnchors: h,
       width: a,
       height: c,
       lastLetterAspectRatio: le.N,
@@ -629,7 +630,7 @@ const de = 1 / 60, me = 2, ve = (t) => t.reduce((a, c) => a + c, 0), Le = (t, a,
   height: c = 81,
   mode: s = Pe.DEFAULT,
   direction: o = Q.HORIZONTAL,
-  color: u = Re.WHITE,
+  color: u = _e.WHITE,
   block: d = !0,
   constants: m,
   style: x,
@@ -637,7 +638,7 @@ const de = 1 / 60, me = 2, ve = (t) => t.reduce((a, c) => a + c, 0), Le = (t, a,
   link: _,
   antimagnet: w
 }) => {
-  const E = ne(
+  const h = ne(
     () => d ? [Y, se, ae, ce, xe, J, oe, ke] : [Y, se, ae, ce, xe, J, oe],
     [d]
   ), b = ne(() => {
@@ -648,13 +649,13 @@ const de = 1 / 60, me = 2, ve = (t) => t.reduce((a, c) => a + c, 0), Le = (t, a,
       EXIT: [0, 0.09, 0.17, 0.4, 0.57, 0.81, 0.88, 1],
       DEFAULT: [0, 0.1436, 0.3227, 0.4783, 0.616, 0.7619, 0.7721, 0.9176]
     };
-    return (T[s] ?? T.DEFAULT).slice(0, E.length);
-  }, [s, E.length]);
+    return (T[s] ?? T.DEFAULT).slice(0, h.length);
+  }, [s, h.length]);
   return /* @__PURE__ */ n.jsx(
-    _e,
+    ge,
     {
       id: t,
-      letters: E,
+      letters: h,
       targetAnchors: b,
       width: a,
       height: c,
@@ -681,7 +682,7 @@ export {
   Ie as KMDLogoDirection,
   Pe as KMD_EXIT_LOGO_MODE,
   Ne as KMD_LOGO_MODE,
-  Re as LOGO_COLOR,
+  _e as LOGO_COLOR,
   Q as LOGO_DIRECTION,
   se as M,
   he as N,

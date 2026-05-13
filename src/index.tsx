@@ -102,7 +102,24 @@ const App = () => {
             <RangeInput id="k" name="Spring stiffness" min={0} max={300} value={constants.k ?? 0} onChange={updateConstant} />
             <RangeInput id="b" name="Spring damping" min={0} max={50} value={constants.b ?? 0} onChange={updateConstant} />
             <RangeInput id="ki" name="Interaction force constant" min={0} max={100000} value={constants.ki ?? 0} onChange={updateConstant} />
-            <RangeInput id="krandom" name="Noise" min={0} max={10000000000} value={constants.krandom ?? 0} onChange={updateConstant} />
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                <RangeInput id="krandom" name="Noise" min={0} max={10000000000} value={constants.krandom ?? 0} onChange={updateConstant} />
+                <button
+                    onClick={() => setConstants(prev => ({ ...prev, krandom: prev.krandom === 0 ? 1992700730 : 0 }))}
+                    style={{
+                        padding: '4px 14px',
+                        fontSize: 12,
+                        backgroundColor: (constants.krandom ?? 0) > 0 ? '#007acc' : '#888',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: 4,
+                        cursor: 'pointer',
+                        whiteSpace: 'nowrap',
+                    }}
+                >
+                    {(constants.krandom ?? 0) > 0 ? '⏸ Pause (krandom → 0)' : '▶ Resume (krandom → max)'}
+                </button>
+            </div>
             <RangeInput id="fcap" name="Max force" min={0} max={200000} value={constants.fcap ?? 0} onChange={updateConstant} />
 
             <h1 style={headerStyle}>Logo Components</h1>
